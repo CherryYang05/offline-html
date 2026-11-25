@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="description" content="单文件离线汇报模板"><title>离线汇报模板</title>
 <meta name="theme-color" content="#f5f6f7">
-<meta name="rsi-file-revision" content="2026-11-25-v7">
+<meta name="rsi-file-revision" content="2026-11-25-v8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'; frame-src 'none'; connect-src 'none'"><style>
 /* 单文件汇报模板：颜色、排版、布局和层级均从这些变量调整。 */
 :root{--paper:#fff;--ground:#f2f5f7;--rail:#fff;--ink:#233139;--body:#3e4b52;--muted:#6c7880;--line:#e2e8eb;--accent:#2c695d;--tint:#eaf3ef;--sand:#faf6ed;--gold:#896d3c;--blue:#426d8b;--nav:264px;--top:68px;--edge:20px;--gap:24px;--reader-size:18px;--reader-leading:1.55;--radius-page:14px;--radius-control:8px;--shadow-page:0 12px 36px rgba(33,49,59,.055),0 2px 5px rgba(33,49,59,.025);--shadow-drawer:0 8px 28px rgba(33,49,59,.055),0 1px 3px rgba(33,49,59,.025);--foreground:#233139;--background:#fff;--border:#e2e8eb;--muted-foreground:#6c7880;--font-size-base:18px;--red:#b45449;--orange:#a97737;--green:#2c695d;--purple:#78648c;--viz-series-1:#4f8199;--viz-series-2:#3d7768;font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;color-scheme:light}
@@ -242,183 +242,116 @@ body.presenting:not(.nav-open) { overflow: visible; }
 @media print { .presenting .review-tools,.presenting .review-status,.presenting .review-panel,.presenting .review-selection { display:none !important; } .presenting.review-open .document { margin-right:0; } }
 </style>
 <style id="rsi-comment-card-style">
-/* Keep annotation controls at a steady scale, independent of document typography. */
-.review-panel .review-thread {
-  padding: 14px;
-  border: 1px solid #dfe6e2;
-  border-radius: 9px;
-  background: #fff;
-  box-shadow: 0 2px 7px #253e3007;
+/* A single drawer surface, shared with the contents rail and document cards. */
+:root { --radius-page: 6px; --review-width: 320px; --link: #245da8; --link-hover: #174879; --drawer-duration: 180ms; }
+.sidebar { transition: transform var(--drawer-duration) ease, opacity var(--drawer-duration) ease; }
+.review-panel {
+  position: fixed; inset: calc(var(--top) + var(--edge)) var(--edge) var(--edge) auto !important;
+  width: var(--review-width); max-width: calc(100vw - var(--edge) * 2); height: auto !important;
+  margin: 0; padding: 0; display: block !important; overflow: auto; overscroll-behavior: contain;
+  border: 1px solid var(--line); border-radius: var(--radius-page); background: var(--paper);
+  box-shadow: var(--shadow-drawer); color: var(--ink); font-size: 15px; line-height: 1.6; z-index: 55;
+  opacity: 0; transform: translateX(calc(100% + var(--edge) + 2px)); visibility: hidden; pointer-events: none;
+  transition: transform var(--drawer-duration) ease, opacity var(--drawer-duration) ease, visibility 0s var(--drawer-duration);
+  scrollbar-width: thin; scrollbar-color: #d4dedb transparent; scroll-padding-top: 160px;
 }
-.review-panel .review-thread.selected {
-  border-color: #a9c4b7;
-  box-shadow: 0 2px 8px #253e300c;
+.review-panel[hidden] { display: none !important; }
+.review-open .review-panel { opacity: 1; transform: none; visibility: visible; pointer-events: auto; transition-delay: 0s; }
+.review-panel .review-panel-head {
+  position: sticky; top: 0; z-index: 6; margin: 0; padding: 16px 18px 13px;
+  border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: var(--paper);
 }
-.review-panel .review-thread-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 6px 12px;
-  margin: 0;
+.review-panel .review-panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.review-panel .review-panel-heading h2 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: 0; }
+.review-panel .review-close { display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 0; border-radius: var(--radius-control); background: transparent; color: var(--muted); font-size: 21px; }
+.review-panel .review-close:hover { background: #f1f5f6; color: var(--ink); }
+.review-panel .review-filters { display: flex; width: auto; gap: 16px; margin: 9px 0 0; padding: 0; border: 0; border-radius: 0; background: none; }
+.review-panel .review-filters button { min-height: 32px; margin: 0; padding: 4px 0; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: none; box-shadow: none; color: var(--link); font-size: 13px; }
+.review-panel .review-filters button[aria-pressed="true"] { border-bottom-color: var(--accent); background: none; color: var(--accent); font-weight: 600; box-shadow: none; }
+.review-panel .review-filters button:hover { color: var(--link-hover); }
+.review-panel .review-panel-foot { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; margin: 0; padding: 10px 0 0; border: 0; border-radius: 0; background: none; font-size: 12px; line-height: 1.6; }
+.review-panel .review-panel-foot span { display: block; margin: 0; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+.review-panel .review-list { position: static; inset: auto; margin: 0; padding: 0 18px; overflow: visible; min-height: 0; pointer-events: auto; }
+.review-panel .review-empty { position: static; top: auto; margin: 0; padding: 20px 0; color: var(--muted); font-size: 14px; line-height: 1.8; white-space: pre-line; }
+.review-panel .review-thread,
+.review-panel .review-thread.selected,
+.review-panel .review-thread.resolved {
+  position: relative; inset: auto; margin: 0; padding: 18px 0; border: 0; border-bottom: 1px solid var(--line);
+  border-radius: 0; background: transparent; box-shadow: none; scroll-margin-top: 160px;
 }
-.review-panel .review-intent {
-  width: auto;
-  max-width: 100%;
-  height: 30px;
-  margin: 0;
-  padding: 3px 8px;
-  border: 1px solid #d4e1da;
-  border-radius: 6px;
-  background: #edf4f0;
-  color: #315f51;
-  font: inherit;
-  font-size: 13px;
-  line-height: 1.4;
-  cursor: pointer;
-}
-.review-panel .review-complete {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  min-height: 30px;
-  margin: 0;
-  color: #65756c;
-  font-size: 12px;
-  line-height: 1.4;
-}
-.review-panel .review-complete input { width: 14px; height: 14px; margin: 0; }
-.review-panel .review-topic {
-  display: block;
-  margin: 7px 0 10px;
-  color: #66786e;
-  font-size: 12px;
-  line-height: 1.5;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-.review-panel .review-quote {
-  margin: 0;
-  padding: 8px 10px;
-  border: 0;
-  border-left: 2px solid #c6d7cc;
-  border-radius: 0 6px 6px 0;
-  background: #f4f7f5;
-  color: #586a60;
-  font-size: 13px;
-  line-height: 1.65;
-  max-height: 6.6em;
-  overflow: auto;
-  box-shadow: none;
-}
-.review-panel .review-quote:hover { background: #eaf1ed; border-left-color: #90ad9c; }
-.review-panel .review-message { margin: 12px 0 0; }
-.review-panel .review-message p {
-  margin: 0;
-  color: #304039;
-  font-size: 14px;
-  line-height: 1.65;
-  letter-spacing: 0;
-}
-.review-panel .review-message-meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 4px 8px;
-  margin-top: 4px;
-}
-.review-panel .review-message time {
-  display: inline;
-  margin: 0;
-  color: #758279;
-  font-size: 11px;
-  line-height: 1.5;
-  font-variant-numeric: tabular-nums;
-}
+.review-panel .review-thread:last-child { border-bottom: 0; }
+.review-panel .review-thread.selected::before { content: ''; position: absolute; left: -18px; top: 18px; bottom: 18px; width: 2px; border-radius: 2px; background: var(--accent); }
+.review-panel .review-thread-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; margin: 0; }
+.review-panel .review-intent { width: auto; max-width: 100%; height: 30px; margin: 0; padding: 3px 8px; border: 1px solid #d8e2de; border-radius: var(--radius-control); background: #f4f8f6; color: #315f51; font: inherit; font-size: 13px; line-height: 1.4; cursor: pointer; }
+.review-panel .review-complete { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; margin: 0; color: #5f6e66; font-size: 12px; line-height: 1.5; cursor: pointer; }
+.review-panel .review-complete input { width: 15px; height: 15px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+.review-panel .review-topic { display: block; margin: 8px 0 10px; color: var(--muted); font-size: 12px; line-height: 1.5; white-space: normal; overflow-wrap: anywhere; }
+.review-panel .review-quote { display: block; width: 100%; margin: 0; padding: 3px 0 3px 10px; border: 0; border-left: 2px solid #c6d6e5; border-radius: 0; background: transparent; color: var(--link); font-size: 13px; line-height: 1.65; text-align: left; text-decoration: underline; text-decoration-color: #adc3df; text-underline-offset: 3px; white-space: normal; max-height: 6.6em; overflow: auto; box-shadow: none; }
+.review-panel button.review-quote:hover { border-left-color: var(--link); background: none; color: var(--link-hover); text-decoration-color: currentColor; }
+.review-panel .review-message { margin: 14px 0 0; overflow-wrap: anywhere; }
+.review-panel .review-message p { margin: 0; color: #304039; font-size: 14px; line-height: 1.7; letter-spacing: 0; white-space: pre-wrap; }
+.review-panel .review-message-meta { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 8px; margin-top: 4px; }
+.review-panel .review-message time { display: inline; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; font-variant-numeric: tabular-nums; }
 .review-panel .rsi-edit-message,
-.review-panel .review-thread-actions button {
-  min-height: 30px;
-  margin: 0;
-  padding: 4px 8px;
-  border: 0;
-  border-radius: 5px;
-  background: transparent;
-  color: #486d5b;
-  font-size: 12px;
-  line-height: 1.5;
-  box-shadow: none;
-  text-decoration: none;
+.review-panel .review-thread-actions button,
+.review-panel .review-panel-foot button {
+  min-height: 30px; margin: 0; padding: 4px 0; border: 0; border-radius: 0; background: transparent;
+  color: var(--link); font-size: 12px; line-height: 1.5; box-shadow: none;
+  text-decoration: underline; text-decoration-color: #adc3df; text-underline-offset: 3px;
 }
 .review-panel .rsi-edit-message:hover,
-.review-panel .review-thread-actions button:hover { background: #eef4f0; color: #2d5d47; }
-.review-panel .review-thread-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid #edf1ee;
-}
-.review-panel .review-thread-actions button:last-child { margin-left: auto; color: #7c7974; }
-.review-panel .review-thread-actions button:last-child:hover { background: #faf0ed; color: #984e41; }
+.review-panel .review-thread-actions button:hover,
+.review-panel .review-panel-foot button:hover { background: none; color: var(--link-hover); text-decoration-color: currentColor; }
+.review-panel .review-thread-actions { display: flex; align-items: center; gap: 18px; margin-top: 4px; padding: 0; border: 0; }
+.review-panel .review-thread-actions button:last-child { margin-left: auto; }
+.review-panel .review-thread-actions button[data-confirm="yes"] { color: #a04738; text-decoration-color: currentColor; }
+.review-panel .review-thread.resolved .review-message p { color: #6c7880; text-decoration: line-through; text-decoration-thickness: 1px; text-decoration-color: #86929a; }
+.review-panel .review-thread.resolved .review-quote { background: none; border-left-color: #c6d6e5; color: var(--link); }
 .review-panel .rsi-message-edit { margin: 0; }
 .review-panel .rsi-message-edit textarea,
 .review-panel .review-reply textarea,
-.review-panel .review-composer textarea {
-  display: block;
-  width: 100%;
-  min-height: 84px;
-  margin: 0;
-  padding: 9px 10px;
-  border: 1px solid #cbd8d0;
-  border-radius: 6px;
-  background: #fff;
-  color: #304039;
-  font: inherit;
-  font-size: 14px;
-  line-height: 1.6;
-  resize: vertical;
-}
-.review-panel textarea:focus {
-  border-color: #709c87;
-  outline: 2px solid #dcebe2;
-  outline-offset: 1px;
-  box-shadow: none;
-}
-.review-panel .review-form-actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 10px 0 0;
-}
-.review-panel .review-form-actions button {
-  min-height: 32px;
-  margin: 0;
-  padding: 5px 12px;
-  border: 1px solid #d8e0db;
-  border-radius: 6px;
-  background: #fff;
-  color: #4d6055;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.5;
-  box-shadow: none;
-}
+.review-panel .review-composer textarea { display: block; width: 100%; min-height: 84px; margin: 0; padding: 9px 10px; border: 1px solid #cbd8d0; border-radius: var(--radius-control); background: #fff; color: #304039; font: inherit; font-size: 14px; line-height: 1.6; resize: vertical; }
+.review-panel textarea:focus { border-color: #709c87; outline: 2px solid #dcebe2; outline-offset: 1px; box-shadow: none; }
+.review-panel .review-form-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
+.review-panel .review-form-actions button { min-height: 34px; margin: 0; padding: 5px 12px; border: 1px solid #d8e0db; border-radius: var(--radius-control); background: #fff; color: #4d6055; font-size: 13px; font-weight: 500; line-height: 1.5; box-shadow: none; }
 .review-panel .review-form-actions button:hover { background: #f3f6f4; border-color: #b9cdc1; }
-.review-panel .review-form-actions .primary { background: #326e60; border-color: #326e60; color: #fff; }
-.review-panel .review-form-actions .primary:hover { background: #285d51; border-color: #285d51; }
-.review-panel .review-message + .review-message { margin-top: 10px; padding-top: 10px; border-top: 1px solid #edf1ee; }
-.review-panel .review-thread.resolved .review-message p { color: #758279; text-decoration: none; }
+.review-panel .review-form-actions .primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.review-panel .review-form-actions .primary:hover { background: #245e52; border-color: #245e52; }
+.review-panel .review-message + .review-message { margin-top: 12px; padding-top: 12px; border-top: 1px solid #edf1ee; }
 .review-panel .review-reply { margin: 12px 0 0; }
-.review-panel .review-composer { border-radius: 9px; }
-@media (pointer: coarse) {
-  .review-panel .rsi-edit-message,
-  .review-panel .review-thread-actions button,
-  .review-panel .review-form-actions button { min-height: 36px; }
+.review-panel .review-composer { position: relative; inset: auto; margin: 0; padding: 18px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; box-shadow: none; }
+.review-panel .review-composer label { display: block; margin: 12px 0 8px; font-size: 14px; }
+.review-panel .review-composer .review-quote { color: var(--body); text-decoration: none; }
+.review-scrim { display: none; }
+.review-open .document,
+.presenting.review-open .document { margin-right: calc(var(--review-width) + var(--edge) + var(--gap)); padding-right: 0; }
+.review-editing .sidebar { top: calc(var(--top) + var(--edge)); }
+.review-editing .document { padding-top: calc(var(--top) + 14px); }
+.reading a:not(.case-jump):not(.site-brand) { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+.report-zoom-button,
+.rsi-component-remove { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 900px) {
+  .review-panel { width: min(var(--review-width), calc(100vw - var(--edge) * 2)); max-width: none; }
+  .review-open .document, .presenting.review-open .document { margin-right: 0; padding-right: 20px; }
+  .review-open .document::after { display: none; }
+  .review-open .review-scrim { display: block; position: fixed; inset: var(--top) 0 0; z-index: 54; border: 0; border-radius: 0; padding: 0; background: #20343e25; cursor: default; }
 }
+@media (max-width: 760px) {
+  :root { --radius-page: 4px; }
+  .review-panel .review-panel-head { padding: 14px 16px 12px; }
+  .review-panel .review-list { padding: 0 16px; }
+  .review-panel .review-thread.selected::before { left: -16px; }
+  .review-panel .review-composer { padding: 16px; }
+  .review-open .document, .presenting.review-open .document { padding-right: 12px; }
+  .review-editing .document { padding-top: calc(var(--top) + 10px); }
+}
+@media (pointer: coarse) {
+  .review-panel .rsi-edit-message, .review-panel .review-thread-actions button,
+  .review-panel .review-form-actions button, .review-panel .review-panel-foot button,
+  .review-panel .review-complete, .review-panel .review-close { min-height: 36px; }
+}
+@media (prefers-reduced-motion: reduce) { .sidebar, .review-panel { transition: none; } }
+@media print { .review-panel, .review-scrim { display: none !important; } .review-open .document, .presenting.review-open .document { margin-right: 0; padding-right: 0; } }
 </style>
 </head><body><a class="skip" href="#document">跳至正文</a><aside class="sidebar" id="report-sidebar" aria-label="报告目录"><div class="rail-heading"><strong>目录</strong><span>汇报目录</span></div><nav aria-label="多级标题目录"><ol><li><a href="#background">背景与问题</a><ol><li><a href="#background-main">背景与问题</a></li></ol></li><li><a href="#overview">概览</a><ol><li><a href="#overview-main">概览</a></li></ol></li><li><a href="#design">方案设计</a><ol><li><a href="#design-main">方案设计</a></li></ol></li><li><a href="#validation">验证与证据</a><ol><li><a href="#validation-main">验证与证据</a></li></ol></li><li><a href="#discussion">讨论</a><ol><li><a href="#discussion-main">讨论</a></li></ol></li><li><a href="#summary">总结</a><ol><li><a href="#summary-main">总结</a></li></ol></li></ol></nav><div class="rail-bottom"><span>单文件汇报</span><span id="rail-progress">01 / 06</span></div></aside><div class="scrim" id="scrim"></div><header class="topbar">
  <div class="nav-lead"><button class="menu" id="menu" aria-label="收起目录" aria-controls="report-sidebar" aria-expanded="true">目录</button><a class="site-brand" href="#background"><strong>离线汇报</strong><span>模板演示</span></a><span class="topbar-title" id="breadcrumb">离线汇报模板</span></div>
@@ -534,7 +467,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   const documentId = $('meta[name="rsi-document-id"]')?.content;
   let dirty = false, editing = false, activeId = null, filter = 'all', pending = null, picked = null;
   let fileHandle = null, lastFileText = null, lastSavedFileText = null, revision = 0, saveBusy = false, restoreDrawer = false, toastTimer;
-  let autoSaveTimer = 0, saveAgain = false, savePaused = false, layoutFrame = 0;
+  let autoSaveTimer = 0, saveAgain = false, savePaused = false, panelCloseTimer = 0;
   const replyDrafts = new Map();
   const oldText = new Map(blocks.map(node => [node.dataset.reviewBlock, node.textContent]));
   const cssHighlights = typeof Highlight !== 'undefined' && !!window.CSS?.highlights;
@@ -546,13 +479,15 @@ document.addEventListener('DOMContentLoaded',()=>{
   $('.toolbar').insertBefore(tools, $('#present'));
   const status = $('#review-status');
   const panel = element('aside', 'review-panel'); panel.id = 'review-panel'; panel.hidden = true;
-  panel.setAttribute('aria-label', '文档批注');
+  panel.setAttribute('aria-label', '文档批注'); panel.setAttribute('aria-hidden', 'true'); panel.inert = true;
+  const reviewScrim = button('关闭批注侧栏', () => closePanel(), 'review-scrim');
+  reviewScrim.tabIndex = -1; reviewScrim.hidden = true; reviewScrim.setAttribute('aria-label', '关闭批注侧栏'); reviewScrim.textContent = '';
   panel.innerHTML = '<div class="review-panel-head"><div class="review-panel-heading"><h2>批注</h2><button type="button" class="review-close" id="review-close" aria-label="关闭批注">×</button></div><div class="review-filters"><button type="button" id="review-all" aria-pressed="true">全部</button><button type="button" id="review-pending" aria-pressed="false">待处理</button></div><div class="review-panel-foot"><span id="review-file-status">连接原文件后自动保存。</span><button type="button" id="review-export">导出批注清单</button></div></div><form class="review-composer" id="review-composer" hidden><div class="review-quote" id="review-draft-quote"></div><label for="review-draft">添加批注</label><select id="review-intent" aria-label="批注意图"><option value="change">建议修改</option><option value="keep">请保留</option><option value="discuss">讨论</option></select><textarea id="review-draft" placeholder="写下修改建议、保留理由或讨论问题…" required></textarea><p class="review-error" id="review-draft-error" hidden></p><div class="review-form-actions"><button type="button" id="review-cancel">取消</button><button type="submit" class="primary">添加批注</button></div></form><div class="review-list" id="review-list"></div>';
   const floating = button('＋ 批注', () => startComment()); floating.className = 'review-selection'; floating.id = 'review-selection'; floating.hidden = true;
   floating.addEventListener('mousedown', event => event.preventDefault());
   const hint = element('div', 'review-edit-hint', '编辑模式 · 可修改正文、标题和表格文字 · 连接原文件后自动保存'); hint.hidden = true;
   const toast = element('div', 'review-toast'); toast.hidden = true; toast.setAttribute('role', 'status');
-  document.body.append(panel, floating, hint, toast);
+  document.body.append(reviewScrim, panel, floating, hint, toast);
   const list = $('#review-list'), composer = $('#review-composer'), draft = $('#review-draft');
   function notify(message) { clearTimeout(toastTimer); toast.textContent = message; toast.hidden = false; toastTimer = setTimeout(() => { toast.hidden = true; }, 4500); }
   function displayStatus(message) {
@@ -565,13 +500,18 @@ document.addEventListener('DOMContentLoaded',()=>{
   function changed() { dirty = true; revision++; status.dataset.dirty = 'true'; displayStatus(fileHandle && !savePaused ? '等待写回原文件…' : '修改尚未写入原文件'); scheduleAutoSave(); }
   function saved(message, atRevision) { if (revision === atRevision) { dirty = false; status.dataset.dirty = 'false'; } displayStatus(dirty ? '等待写回原文件…' : message); }
   function openPanel() {
-    panel.hidden = false; document.body.classList.add('review-open'); $('#review-toggle').setAttribute('aria-expanded', 'true');
+    clearTimeout(panelCloseTimer); panel.hidden = false; panel.inert = false; panel.setAttribute('aria-hidden', 'false'); reviewScrim.hidden = false;
+    if (!document.body.classList.contains('review-open')) getComputedStyle(panel).transform;
+    document.body.classList.add('review-open'); $('#review-toggle').setAttribute('aria-expanded', 'true');
     if (innerWidth > 1100 && innerWidth < 1400 && !document.body.classList.contains('nav-collapsed')) { $('#menu').click(); restoreDrawer = true; }
     if (document.body.classList.contains('nav-open')) $('#menu').click();
-    queueFit(); queueReviewLayout();
+    queueFit(); 
   }
   function closePanel() {
-    panel.hidden = true; document.body.classList.remove('review-open'); $('#review-toggle').setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('review-open'); panel.inert = true; panel.setAttribute('aria-hidden', 'true'); reviewScrim.hidden = true;
+    clearTimeout(panelCloseTimer);
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) panel.hidden = true;
+    else panelCloseTimer = setTimeout(() => { if (!document.body.classList.contains('review-open')) panel.hidden = true; }, 180); $('#review-toggle').setAttribute('aria-expanded', 'false');
     floating.hidden = true;
     if (restoreDrawer && document.body.classList.contains('nav-collapsed')) $('#menu').click();
     restoreDrawer = false; queueFit();
@@ -581,30 +521,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     marks.forEach(mark => mark.replaceWith(...mark.childNodes));
     if (marks.length) for (const node of blocks) node.normalize();
   }
-  function queueReviewLayout() {
-    cancelAnimationFrame(layoutFrame); layoutFrame=requestAnimationFrame(layoutReview);
-  }
-  function layoutReview() {
-    if(panel.hidden)return;
-    if(innerWidth<=900){panel.style.top='';panel.style.height='';for(const node of [composer,...list.querySelectorAll('.review-thread')])node.style.top='';return;}
-    const reading=$('.reading'),paperRect=reading.getBoundingClientRect(),panelTop=paperRect.top+scrollY;
-    panel.style.top=panelTop+'px';
-    let cursor=$('.review-panel-head',panel).offsetHeight+16;
-    const slots=[];
-    for(const card of list.querySelectorAll('.review-thread')){
-      const thread=state.threads.find(thread=>'review-thread-'+thread.id===card.id);if(!thread)continue;
-      const anchor=thread.anchors.find(anchor=>rangeFor(anchor)),block=byId.get((anchor||thread.anchors[0])?.blockId);
-      const rect=anchor?rangeFor(anchor).getBoundingClientRect():block?.getBoundingClientRect();
-      slots.push({node:card,top:rect?rect.top+scrollY-panelTop:cursor});
-    }
-    if(!composer.hidden){const anchor=pending?.find(anchor=>rangeFor(anchor)),block=byId.get(pending?.[0]?.blockId),rect=anchor?rangeFor(anchor).getBoundingClientRect():block?.getBoundingClientRect();slots.push({node:composer,top:rect?rect.top+scrollY-panelTop:cursor,composing:true});}
-    slots.sort((a,b)=>a.top-b.top||(b.composing?1:0)-(a.composing?1:0));
-    for(const slot of slots){const top=Math.max(cursor,slot.top);slot.node.style.top=Math.round(top)+'px';cursor=top+slot.node.offsetHeight+12;}
-    panel.style.height=Math.ceil(Math.max(paperRect.height,cursor+16))+'px';
-  }
-  const threadResize=new ResizeObserver(queueReviewLayout);
-  const reviewResize=new ResizeObserver(queueReviewLayout);reviewResize.observe($('.reading'));reviewResize.observe($('.review-panel-head',panel));reviewResize.observe(composer);
-  window.addEventListener('resize',queueReviewLayout);
   function textNodes(block) {
     const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT); const nodes = []; let node;
     while ((node = walker.nextNode())) nodes.push(node);
@@ -681,10 +597,10 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.addEventListener('selectionchange', () => { if (!panel.contains(document.activeElement)) selectionChanged(); });
   window.addEventListener('scroll', () => { floating.hidden=true; }, {passive:true});
   function startComment() {
-    if(pending){openPanel();composer.hidden=false;queueReviewLayout();draft.focus();notify('已恢复未提交的批注；提交或取消后可添加另一条。');return;}
+    if(pending){openPanel();composer.hidden=false;draft.focus();notify('已恢复未提交的批注；提交或取消后可添加另一条。');return;}
     const selection=picked || captureSelection(); if (!selection) { notify('先选中需要批注的正文。'); return; }
     pending=structuredClone(selection.anchors); picked=null; floating.hidden=true; openPanel();
-    $('#review-draft-quote').textContent=pending.map(a=>a.quote).join('\n'); draft.value=''; $('#review-intent').value='change'; $('#review-draft-error').hidden=true; composer.hidden=false;layoutReview(); draft.focus();
+    $('#review-draft-quote').textContent=pending.map(a=>a.quote).join('\n'); draft.value=''; $('#review-intent').value='change'; $('#review-draft-error').hidden=true; composer.hidden=false; draft.focus();
   }
   const intentLabels={change:'建议修改',keep:'请保留',discuss:'讨论'};
   function locationLabel(thread) {
@@ -701,13 +617,13 @@ document.addEventListener('DOMContentLoaded',()=>{
     const unresolved=state.threads.filter(t=>!t.resolved).length; $('#review-count').textContent=String(state.threads.length);
     $('#review-all').textContent='全部 '+state.threads.length; $('#review-pending').textContent='待处理 '+unresolved;
     $('#review-all').setAttribute('aria-pressed',String(filter==='all')); $('#review-pending').setAttribute('aria-pressed',String(filter==='pending'));
-    threadResize.disconnect();list.replaceChildren(); const visible=state.threads.filter(t=>filter==='all'||!t.resolved);
-    if (!visible.length) { list.append(element('p','review-empty',state.threads.length?'当前没有待处理批注。':'选中正文中的文字，点击“＋ 批注”。\n也可以使用 Ctrl / ⌘ + Alt + M。'));queueReviewLayout();return; }
+    list.replaceChildren(); const visible=state.threads.filter(t=>filter==='all'||!t.resolved);
+    if (!visible.length) { list.append(element('p','review-empty',state.threads.length?'当前没有待处理批注。':'选中正文中的文字，点击“＋ 批注”。\n也可以使用 Ctrl / ⌘ + Alt + M。'));return; }
     for (const thread of visible) {
       const card=element('article','review-thread'+(thread.resolved?' resolved':'')+(thread.id===activeId?' selected':'')); card.id='review-thread-'+thread.id;card.tabIndex=-1;
       const top=element('div','review-thread-top'), place=element('span','review-topic',locationLabel(thread)); place.title=place.textContent;
       const complete=element('label','review-complete'), check=element('input'); check.type='checkbox'; check.checked=!!thread.resolved; check.setAttribute('aria-label','标记批注已完成');
-      check.addEventListener('change',()=>{thread.resolved=check.checked;changed();paint();renderThreads();}); complete.append(check,document.createTextNode('已完成')); 
+      check.addEventListener('change',()=>{thread.resolved=check.checked;changed();paint();renderThreads();(document.getElementById('review-thread-'+thread.id)?.querySelector('input[type=checkbox]')||$('#review-pending')).focus({preventScroll:true});}); complete.append(check,document.createTextNode('已完成')); 
       const intent=element('select','review-intent');
       intent.setAttribute('aria-label','批注意图');
       for(const [value,label] of Object.entries(intentLabels)){
@@ -735,7 +651,7 @@ document.addEventListener('DOMContentLoaded',()=>{
           input.rows=3;input.value=message.text;input.required=true;
           const closeEdit=()=>{
             form.remove();messageText.hidden=false;metadata.hidden=false;
-            row.classList.remove('is-editing');queueReviewLayout();edit.focus();
+            row.classList.remove('is-editing');edit.focus();
           };
           const actions=element('div','review-form-actions');
           const submit=element('button','primary','保存批注');submit.type='submit';
@@ -753,7 +669,7 @@ document.addEventListener('DOMContentLoaded',()=>{
             }
           });
           messageText.hidden=true;metadata.hidden=true;row.classList.add('is-editing');
-          row.append(form);queueReviewLayout();input.focus();
+          row.append(form);input.focus();
         },'rsi-edit-message');
         metadata.append(time,edit);
         row.append(messageText,metadata);card.append(row);
@@ -762,12 +678,12 @@ document.addEventListener('DOMContentLoaded',()=>{
       const actions=element('div','review-thread-actions'), replyForm=element('form','review-reply'); replyForm.hidden=!replyDraft.open;
       const replyBox=element('textarea'); replyBox.placeholder='回复这条批注'; replyBox.setAttribute('aria-label','回复批注'); replyBox.required=true;replyBox.value=replyDraft.text;
       replyBox.addEventListener('input',()=>{replyDraft.text=replyBox.value;replyDrafts.set(thread.id,replyDraft);});
-      const replyActions=element('div','review-form-actions'); const submit=element('button','primary','回复'); submit.type='submit'; replyActions.append(button('取消',()=>{replyDrafts.delete(thread.id);replyDraft.text='';replyDraft.open=false;replyBox.value='';replyForm.hidden=true;queueReviewLayout();}),submit); replyForm.append(replyBox,replyActions);
+      const replyActions=element('div','review-form-actions'); const submit=element('button','primary','回复'); submit.type='submit'; replyActions.append(button('取消',()=>{replyDrafts.delete(thread.id);replyDraft.text='';replyDraft.open=false;replyBox.value='';replyForm.hidden=true;}),submit); replyForm.append(replyBox,replyActions);
       replyForm.addEventListener('submit',event=>{event.preventDefault();const text=replyBox.value.trim();if(!text)return;thread.messages.push({id:uid(),text,createdAt:new Date().toISOString()});replyDrafts.delete(thread.id);changed();renderThreads();});
-      actions.append(button('回复',()=>{replyDraft.open=true;replyDrafts.set(thread.id,replyDraft);replyForm.hidden=false;queueReviewLayout();replyBox.focus();}));
-      const remove=button('删除',()=>{ if(remove.dataset.confirm!=='yes'){remove.dataset.confirm='yes';remove.textContent='确认删除';return;}replyDrafts.delete(thread.id);state.threads=state.threads.filter(t=>t.id!==thread.id);if(activeId===thread.id)activeId=null;changed();paint();renderThreads();}); actions.append(remove);card.append(actions,replyForm);list.append(card);threadResize.observe(card);
+      actions.append(button('回复',()=>{replyDraft.open=true;replyDrafts.set(thread.id,replyDraft);replyForm.hidden=false;replyBox.focus();}));
+      const remove=button('删除',()=>{ if(remove.dataset.confirm!=='yes'){remove.dataset.confirm='yes';remove.textContent='确认删除';return;}replyDrafts.delete(thread.id);state.threads=state.threads.filter(t=>t.id!==thread.id);if(activeId===thread.id)activeId=null;changed();paint();renderThreads();}); actions.append(remove);card.append(actions,replyForm);list.append(card);
     }
-    queueReviewLayout();
+    
   }
   composer.addEventListener('submit',event=>{
     event.preventDefault();const text=draft.value.trim();if(!text||!pending)return;
@@ -775,9 +691,14 @@ document.addEventListener('DOMContentLoaded',()=>{
     const thread={id:uid(),chapterId:chapter?.id,chapterTitle:chapter?.dataset.title,intent:$('#review-intent').value,anchors:pending,messages:[{id:uid(),text,createdAt:new Date().toISOString()}],resolved:false};
     state.threads.push(thread);activeId=thread.id;pending=null;draft.value='';composer.hidden=true;changed();window.getSelection()?.removeAllRanges();paint();renderThreads();
   });
-  $('#review-cancel').addEventListener('click',()=>{composer.hidden=true;pending=null;draft.value='';window.getSelection()?.removeAllRanges();queueReviewLayout();});
-  $('#review-toggle').addEventListener('click',()=>{if(panel.hidden){openPanel();renderThreads();}else closePanel();});
+  $('#review-cancel').addEventListener('click',()=>{composer.hidden=true;pending=null;draft.value='';window.getSelection()?.removeAllRanges();});
+  $('#review-toggle').addEventListener('click',()=>{if(!document.body.classList.contains('review-open')){openPanel();renderThreads();}else closePanel();});
   $('#review-close').addEventListener('click',()=>{closePanel();$('#review-toggle').focus();});
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || event.defaultPrevented || !document.body.classList.contains('review-open') || document.querySelector('dialog[open]')) return;
+    event.preventDefault(); closePanel(); $('#review-toggle').focus();
+  });
+  $('#menu').addEventListener('click', () => { if (document.body.classList.contains('nav-open') && document.body.classList.contains('review-open')) closePanel(); });
   $('#review-all').addEventListener('click',()=>{filter='all';renderThreads();});$('#review-pending').addEventListener('click',()=>{filter='pending';renderThreads();});
   $('#document').addEventListener('click',event=>{
     if(editing||window.getSelection()?.toString())return;
@@ -818,7 +739,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   function setEditing(value) {
     editing=value;$('#review-add').hidden=!value;document.body.classList.toggle('review-editing',value);hint.hidden=!value;$('#review-edit').setAttribute('aria-pressed',String(value));$('#review-edit').textContent=value?'结束编辑':'编辑正文';
     stripFallback();for(const block of blocks){if(value){block.setAttribute('contenteditable','true');block.setAttribute('spellcheck','false');}else{block.removeAttribute('contenteditable');block.removeAttribute('spellcheck');}}
-    window.getSelection()?.removeAllRanges();floating.hidden=true;paint();queueFit();queueReviewLayout();
+    window.getSelection()?.removeAllRanges();floating.hidden=true;paint();queueFit();
   }
   $('#review-edit').addEventListener('click',()=>setEditing(!editing));
   function bindEditable(block){
@@ -826,9 +747,9 @@ document.addEventListener('DOMContentLoaded',()=>{
     block.addEventListener('input',event=>{
       const before=oldText.get(block.dataset.reviewBlock)||'',after=block.textContent;
       updateAnchors(block,before,after);oldText.set(block.dataset.reviewBlock,after);syncTitle(block);
-      if(!event.isComposing){changed();paint();queueReviewLayout();}
+      if(!event.isComposing){changed();paint();}
     });
-    block.addEventListener('compositionend',()=>{changed();paint();queueReviewLayout();});
+    block.addEventListener('compositionend',()=>{changed();paint();});
     block.addEventListener('paste',event=>{
       if(!editing)return;
       event.preventDefault();document.execCommand('insertText',false,event.clipboardData.getData('text/plain').replace(/\r?\n/g,' '));
@@ -978,7 +899,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(!zoomed)return;
     const previous=zoomed;zoomed=null;
     previous.marker.replaceWith(previous.node);previous.shell.style.minHeight='';
-    queueFit();queueReviewLayout();requestAnimationFrame(()=>previous.trigger.focus({preventScroll:true}));
+    queueFit();requestAnimationFrame(()=>previous.trigger.focus({preventScroll:true}));
   }
   function closeZoom(){if(zoomDialog.open)zoomDialog.close();restoreZoom();}
   function openZoom(node,shell,trigger){
@@ -987,7 +908,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     const marker=element('div','report-zoom-placeholder');marker.style.height=node.getBoundingClientRect().height+'px';
     node.before(marker);zoomed={node,shell,trigger,marker};
     $('#report-zoom-title').textContent=title;zoomStage.append(node);zoomDialog.showModal();
-    $('.report-zoom-content',zoomDialog).scrollTop=0;$('#report-zoom-close').focus();queueReviewLayout();
+    $('.report-zoom-content',zoomDialog).scrollTop=0;$('#report-zoom-close').focus();
   }
   $('#report-zoom-close').addEventListener('click',closeZoom);
   zoomDialog.addEventListener('close',()=>{if(!zoomDialog.open)restoreZoom();});
