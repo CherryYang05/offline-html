@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="description" content="基于项目文档的训练仿真 RSI 汇报：定位误差、修正与精度验收、局部干预验证根因。"><title>训练仿真 RSI · 离线汇报</title>
 <meta name="theme-color" content="#f5f6f7">
-<meta name="rsi-file-revision" content="2026-11-24-v3">
+<meta name="rsi-file-revision" content="2026-11-25-v4">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'; frame-src 'none'; connect-src 'none'"><style>
 /* 单文件汇报模板：颜色、排版、布局和层级均从这些变量调整。 */
 :root{--paper:#fff;--ground:#f2f5f7;--rail:#fff;--ink:#233139;--body:#3e4b52;--muted:#6c7880;--line:#e2e8eb;--accent:#2c695d;--tint:#eaf3ef;--sand:#faf6ed;--gold:#896d3c;--blue:#426d8b;--nav:264px;--top:68px;--edge:20px;--gap:24px;--reader-size:18px;--reader-leading:1.55;--radius-page:14px;--radius-control:8px;--shadow-page:0 12px 36px rgba(33,49,59,.055),0 2px 5px rgba(33,49,59,.025);--shadow-drawer:0 8px 28px rgba(33,49,59,.055),0 1px 3px rgba(33,49,59,.025);--foreground:#233139;--background:#fff;--border:#e2e8eb;--muted-foreground:#6c7880;--font-size-base:18px;--red:#b45449;--orange:#a97737;--green:#2c695d;--purple:#78648c;--viz-series-1:#4f8199;--viz-series-2:#3d7768;font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;color-scheme:light}
@@ -678,7 +678,9 @@ document.addEventListener('DOMContentLoaded',()=>{
 (() => {
   'use strict';
   const $ = (selector, root = document) => root.querySelector(selector);
-  const sourceDoc = offlineSource;
+  let sourceDoc = offlineSource;
+  // Compare the authored file before assigning any annotation IDs at runtime.
+  const openedSnapshot=authoredSnapshot(sourceDoc);
   const protectedSelector = '#rsi-architecture-v2,#rsi-abcd-example,script,style,.case-jump-row,.case-return-row,.source-note,.footer';
   const blockSelector = '.heading-text,p,blockquote,li,td,th,figcaption,h3:not(.topic-title):not(.section-title),h4:not(.topic-title):not(.section-title)';
   function collectBlocks(doc) {
@@ -695,7 +697,6 @@ document.addEventListener('DOMContentLoaded',()=>{
   try { state = JSON.parse($('#rsi-review-data').textContent); } catch { state = {version: 1, threads: []}; }
   if (!Array.isArray(state.threads)) state.threads = [];
   let expectedRevision = $('meta[name="rsi-file-revision"]').content;
-  const openedSnapshot=sourceDoc.documentElement.outerHTML;
   const documentId = $('meta[name="rsi-document-id"]')?.content;
   let dirty = false, editing = false, activeId = null, filter = 'all', pending = null, picked = null;
   let fileHandle = null, lastFileText = null, lastSavedFileText = null, revision = 0, saveBusy = false, restoreDrawer = false, toastTimer;
@@ -1027,9 +1028,20 @@ document.addEventListener('DOMContentLoaded',()=>{
   function filename(){try{return decodeURIComponent(location.pathname.split('/').pop()) || '离线汇报.html';}catch{return '训练仿真RSI-卡片版模板.html';}}
   function download(text,name,type){const url=URL.createObjectURL(new Blob([text],{type})),link=element('a');link.href=url;link.download=name;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);}
   function downloadHTML(){try{const html=serialize(uid());download(html,filename().replace(/\.html?$/i,'-副本.html'),'text/html;charset=utf-8');notify('已导出一份副本。自动写回原文件需要先点击“连接原文件”。');$('#review-save-menu').open=false;}catch(error){notify('无法生成文件：'+error.message);}}
+  function authoredSnapshot(doc){
+    const article=doc.querySelector('#document>.reading');
+    const notes=doc.getElementById('rsi-review-data');
+    if(!article||!notes)throw new Error('文件缺少汇报正文或批注数据。');
+    return [article.innerHTML,notes.textContent];
+  }
   function fileSnapshot(text){
     const doc=new DOMParser().parseFromString(text,'text/html');
-    return {id:doc.querySelector('meta[name="rsi-document-id"]')?.content,revision:doc.querySelector('meta[name="rsi-file-revision"]')?.content,markup:doc.documentElement.outerHTML};
+    return {
+      doc,
+      id:doc.querySelector('meta[name="rsi-document-id"]')?.content,
+      revision:doc.querySelector('meta[name="rsi-file-revision"]')?.content,
+      authored:authoredSnapshot(doc)
+    };
   }
   function syncFileButton(){
     const connected=!!fileHandle&&!savePaused,control=$('#review-connect');
@@ -1073,9 +1085,11 @@ document.addEventListener('DOMContentLoaded',()=>{
       const file=await handle.getFile(),text=await file.text();let snapshot;
       try{snapshot=fileSnapshot(text);}catch{throw new Error('选择的文件不是当前文档，请选择正在阅读的这份 HTML。');}
       if(!documentId||snapshot.id!==documentId)throw new Error('选择的文件不是当前文档，未做任何写入。');
-      if(snapshot.revision!==expectedRevision||(lastSavedFileText?text!==lastSavedFileText:snapshot.markup!==openedSnapshot))throw new Error('磁盘文件与当前打开版本不同。请重新打开该文件后再连接，避免覆盖已有修改。');
+      const sameAuthored=snapshot.authored.every((value,i)=>value===openedSnapshot[i]);
+      if(snapshot.revision!==expectedRevision||(lastSavedFileText?text!==lastSavedFileText:!sameAuthored))throw new Error('磁盘文件与当前打开版本不同。请重新打开该文件后再连接，避免覆盖已有修改。');
       const permission={mode:'readwrite'};
       if(await handle.queryPermission(permission)!=='granted'&&await handle.requestPermission(permission)!=='granted')throw new Error('未获得原文件写入权限，修改仍保留在页面中。');
+      sourceDoc=snapshot.doc;
       fileHandle=handle;lastFileText=text;savePaused=false;syncFileButton();displayStatus(dirty?'等待写回原文件…':'已连接原文件');$('#review-save-menu').open=false;
       notify('已连接 '+handle.name+'，之后的修改会自动写回。');if(dirty)await writeBack();
     }catch(error){if(error.name!=='AbortError')notify(error.message||'连接未完成，尚未写入文件。');displayStatus(dirty?'修改尚未写入原文件':fileHandle?'已连接原文件':'尚未连接原文件');}
