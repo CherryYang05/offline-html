@@ -64,7 +64,7 @@ def check(path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("html", type=Path, help="按 docs/完整HTML回归.md 操作并写回的测试副本")
+    parser.add_argument("html", type=Path, help="主模板 offline-report.html 或按回归记录操作生成的测试副本")
     args = parser.parse_args()
     try:
         print(json.dumps(check(args.html), ensure_ascii=False, indent=2))
