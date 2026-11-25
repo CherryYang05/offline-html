@@ -690,6 +690,13 @@ mark[data-review-mark].is-completed { background: #eef0ef; }
   .presenting .topic.current { padding-top: 14px; }
 }
 
+@media (max-width: 430px) {
+  .topbar { --toolbar-control-padding: 5px; }
+  .topbar .toolbar, .topbar .review-tools { gap: 4px; }
+  .topbar .review-file-control summary { width: 25px; }
+}
+body:not(.review-anchored) .review-panel .review-list { padding-block-start: 5px; }
+
 /* Anchored cards share the page scroll, with a sticky control header. */
 .review-open.review-anchored .review-panel {
   position: absolute;
