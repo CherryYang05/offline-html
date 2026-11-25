@@ -82,7 +82,7 @@ python3 scripts/check_saved_report.py offline-report.html
 {
   "passed": true,
   "bytes": 126717,
-  "sha256": "31b28a3f2c47267701b404fcfcd2eca6bb9398d46c30de72ad48fd8ff9165b2a",
+  "sha256": "5eb994738873efd00e311fd51e907b99045030322e1976c8cb2228c0b621c888",
   "threads": 1,
   "components": ["columns", "details"],
   "gif_bytes": 0
