@@ -1,6 +1,6 @@
 <!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="description" content="基于项目文档的训练仿真 RSI 汇报：定位误差、修正与精度验收、局部干预验证根因。"><title>训练仿真 RSI · 离线汇报</title>
 <meta name="theme-color" content="#f5f6f7">
-<meta name="rsi-file-revision" content="2026-11-25-v5">
+<meta name="rsi-file-revision" content="2026-11-25-v6">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'; frame-src 'none'; connect-src 'none'"><style>
 /* 单文件汇报模板：颜色、排版、布局和层级均从这些变量调整。 */
 :root{--paper:#fff;--ground:#f2f5f7;--rail:#fff;--ink:#233139;--body:#3e4b52;--muted:#6c7880;--line:#e2e8eb;--accent:#2c695d;--tint:#eaf3ef;--sand:#faf6ed;--gold:#896d3c;--blue:#426d8b;--nav:264px;--top:68px;--edge:20px;--gap:24px;--reader-size:18px;--reader-leading:1.55;--radius-page:14px;--radius-control:8px;--shadow-page:0 12px 36px rgba(33,49,59,.055),0 2px 5px rgba(33,49,59,.025);--shadow-drawer:0 8px 28px rgba(33,49,59,.055),0 1px 3px rgba(33,49,59,.025);--foreground:#233139;--background:#fff;--border:#e2e8eb;--muted-foreground:#6c7880;--font-size-base:18px;--red:#b45449;--orange:#a97737;--green:#2c695d;--purple:#78648c;--viz-series-1:#4f8199;--viz-series-2:#3d7768;font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;color-scheme:light}
@@ -846,7 +846,9 @@ function applyTypography(){const size=validSizes.has(fontSizeSelect.value)?fontS
 fontSizeSelect.addEventListener('change',()=>applyTypography());lineHeightSelect.addEventListener('change',()=>applyTypography());applyTypography(false);
 document.getElementById('rsi-abcd-example')?.addEventListener('rsi-case-change',event=>{const key=event.detail.selected,back=document.getElementById('case-return');back.href='#module-'+(key==='N'?'b':key.toLowerCase());back.textContent=key==='N'?'返回 B 模块说明':'返回 '+key+' 模块说明';queueFit();});
 document.querySelectorAll('#rsi-case-tabs [role="tab"]').forEach((tab,i,tabs)=>tab.addEventListener('keydown',event=>{if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();const next=tabs[(i+(event.key==='ArrowRight'?1:tabs.length-1))%tabs.length];next.click();next.focus();}}));
-document.getElementById('rsi-fix').addEventListener('click',queueFit);new ResizeObserver(queueFit).observe(document.getElementById('rsi-abcd-example'));new ResizeObserver(queueFit).observe(document.querySelector('.reading'));
+document.getElementById('rsi-fix')?.addEventListener('click',queueFit);
+const example=document.getElementById('rsi-abcd-example');if(example)new ResizeObserver(queueFit).observe(example);
+new ResizeObserver(queueFit).observe(document.querySelector('.reading'));
 Object.assign(window,{queueFit,navigateTo,counter,currentTopic:()=>topics[current]});
 counter();if(location.hash){const initialHash=location.hash,target=document.getElementById(initialHash.slice(1));if(target)requestAnimationFrame(()=>{if(location.hash===initialHash)navigateTo(target);});}
 },{once:true});
@@ -1445,7 +1447,12 @@ document.addEventListener('DOMContentLoaded',()=>{
     clean.querySelector('meta[name="rsi-document-id"]').content=uid();
     clean.querySelector('meta[name="rsi-file-revision"]').content=uid();
     clean.querySelector('.site-brand strong').textContent='离线汇报';
+    clean.querySelector('.site-brand span').textContent='模板演示';
     clean.querySelector('.rail-heading span').textContent='汇报目录';
+    clean.querySelector('.rail-bottom span').textContent='单文件汇报';
+    clean.getElementById('breadcrumb').textContent='离线汇报模板';
+    clean.getElementById('rail-progress').textContent='01 / 06';
+    clean.getElementById('page-progress').textContent='01 / 06';
     const names=['背景与问题','概览','方案设计','验证与证据','讨论','总结'];
     const anchors=Array.from(clean.querySelectorAll('.sidebar nav > ol > li'));
     Array.from(clean.querySelectorAll('.sheet')).forEach((sheet,i)=>{
