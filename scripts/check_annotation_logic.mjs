@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 const source=readFileSync(new URL('../offline-report.html',import.meta.url),'utf8');
 const code=source.split('// BEGIN ANNOTATION LOGIC')[1]?.split('// END ANNOTATION LOGIC')[0];
 assert.ok(code,'Missing annotation logic');
-const {locateTextAnchor:locate,shiftTextAnchor:shift,packAnnotationSlots:pack,annotationTextHash:hash}=Function(code+';return {locateTextAnchor,shiftTextAnchor,packAnnotationSlots,annotationTextHash};')();
+const {locateTextAnchor:locate,shiftTextAnchor:shift,annotationTextHash:hash}=Function(code+';return {locateTextAnchor,shiftTextAnchor,annotationTextHash};')();
 let checks=0;
 function test(name,run){run();checks++;console.log('PASS '+name);}
 const anchor=(text,start,end)=>({start,end,quote:text.slice(start,end),originalQuote:text.slice(start,end),prefix:text.slice(Math.max(0,start-24),start),suffix:text.slice(end,end+24),textHash:hash(text)});
@@ -17,6 +17,20 @@ test('Context relocates a repeated quote after external insertion',()=>{
 });
 test('Ambiguous repeated text is rejected instead of guessed',()=>{
  assert.equal(locate('甲 甲',{quote:'甲',start:-1,prefix:'',suffix:''}),null);
+});
+test('Punctuation alone cannot choose between repeated quotes',()=>{
+ const a=anchor('，甲。',1,2);
+ assert.equal(locate('，甲。 甲',a),null);
+});
+test('The last surviving duplicate needs context from the original occurrence',()=>{
+ const text='左侧原句后文；右侧原句说明';
+ const start=text.indexOf('原句'),a=anchor(text,start,start+2);
+ assert.equal(locate('右侧原句说明',a),null);
+});
+test('A different block needs contextual evidence',()=>{
+ const a=anchor('前置信息指定引文后续说明',4,8);
+ assert.equal(locate('只出现指定引文的无关段落',a,{requireContext:true}),null);
+ assert.equal(locate('新段开头前置信息指定引文后续说明',a,{requireContext:true}).start,8);
 });
 test('Changed paragraph does not trust a stale matching offset',()=>{
  const a={quote:'甲',start:1,end:2,prefix:'右',suffix:'二',textHash:hash('右甲二')};
@@ -53,13 +67,25 @@ test('A shared full stop does not keep unrelated replacement text linked',()=>{
 test('An explicit full selection is authoritative even if a prefix survives',()=>{
  const a=anchor('旧说法',0,3);shift(a,'旧说法','旧结论',{start:0,end:3});assert.ok(a.orphaned);
 });
-test('Collision avoidance is ordered and never overlaps',()=>{
- const slots=pack([{id:'a',desired:200,height:90},{id:'b',desired:205,height:70},{id:'c',desired:500,height:40}],160,12);
- assert.deepEqual(slots.map(s=>s.top),[200,302,500]);
- for(let i=1;i<slots.length;i++)assert.ok(slots[i].top>=slots[i-1].top+slots[i-1].height+12);
+test('Deleting one occurrence never jumps to the remaining identical text',()=>{
+ const before='重复 重复';
+ const removed=anchor(before,0,2), remaining=anchor(before,3,5);
+ shift(removed,before,'重复',{start:0,end:3});
+ shift(remaining,before,'重复',{start:0,end:3});
+ assert.ok(removed.orphaned);assert.equal(remaining.start,0);assert.equal(remaining.quote,'重复');
 });
-test('Packing reserves the rail header and keeps equal-anchor order',()=>{
- const slots=pack([{id:'a',desired:20,height:50},{id:'b',desired:20,height:50}],160,12);
- assert.deepEqual(slots.map(s=>[s.id,s.top]),[['a',160],['b',222]]);
+test('An edit crossing the anchor boundary keeps only surviving selected text',()=>{
+ const before='abc DEF ghi';
+ const a=anchor(before,4,7);shift(a,before,'new EF ghi',{start:0,end:5});
+ assert.equal(a.quote,'EF');assert.equal(a.start,4);
+});
+test('A repeated delete with no trustworthy edit range stays unresolved',()=>{
+ const a=anchor('甲甲',0,1);shift(a,'甲甲','甲');assert.ok(a.orphaned);
+});
+test('Undo restores an orphan only when it restores the complete original paragraph',()=>{
+ const before='甲 甲',a=anchor(before,0,1);
+ shift(a,before,'甲',{start:0,end:2});
+ shift(a,'甲','乙 甲',null,'historyUndo');assert.ok(a.orphaned);
+ shift(a,'乙 甲',before,null,'historyUndo');assert.ok(!a.orphaned);assert.equal(a.start,0);
 });
 console.log(checks+' annotation checks passed');
