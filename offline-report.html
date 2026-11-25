@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="description" content="单文件离线汇报模板"><title>离线汇报模板</title>
 <meta name="theme-color" content="#f5f6f7">
-<meta name="rsi-file-revision" content="2026-11-25-v8">
+<meta name="rsi-file-revision" content="2026-11-25-v9">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'; frame-src 'none'; connect-src 'none'"><style>
 /* 单文件汇报模板：颜色、排版、布局和层级均从这些变量调整。 */
 :root{--paper:#fff;--ground:#f2f5f7;--rail:#fff;--ink:#233139;--body:#3e4b52;--muted:#6c7880;--line:#e2e8eb;--accent:#2c695d;--tint:#eaf3ef;--sand:#faf6ed;--gold:#896d3c;--blue:#426d8b;--nav:264px;--top:68px;--edge:20px;--gap:24px;--reader-size:18px;--reader-leading:1.55;--radius-page:14px;--radius-control:8px;--shadow-page:0 12px 36px rgba(33,49,59,.055),0 2px 5px rgba(33,49,59,.025);--shadow-drawer:0 8px 28px rgba(33,49,59,.055),0 1px 3px rgba(33,49,59,.025);--foreground:#233139;--background:#fff;--border:#e2e8eb;--muted-foreground:#6c7880;--font-size-base:18px;--red:#b45449;--orange:#a97737;--green:#2c695d;--purple:#78648c;--viz-series-1:#4f8199;--viz-series-2:#3d7768;font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;color-scheme:light}
@@ -242,116 +242,115 @@ body.presenting:not(.nav-open) { overflow: visible; }
 @media print { .presenting .review-tools,.presenting .review-status,.presenting .review-panel,.presenting .review-selection { display:none !important; } .presenting.review-open .document { margin-right:0; } }
 </style>
 <style id="rsi-comment-card-style">
-/* A single drawer surface, shared with the contents rail and document cards. */
-:root { --radius-page: 6px; --review-width: 320px; --link: #245da8; --link-hover: #174879; --drawer-duration: 180ms; }
+/* The right rail has one card layer: cards on the document margin, or flat rows in a list drawer. */
+:root { --radius-page: 6px; --review-width: 324px; --link: #245da8; --link-hover: #174879; --drawer-duration: 180ms; }
 .sidebar { transition: transform var(--drawer-duration) ease, opacity var(--drawer-duration) ease; }
-.review-panel {
-  position: fixed; inset: calc(var(--top) + var(--edge)) var(--edge) var(--edge) auto !important;
-  width: var(--review-width); max-width: calc(100vw - var(--edge) * 2); height: auto !important;
-  margin: 0; padding: 0; display: block !important; overflow: auto; overscroll-behavior: contain;
-  border: 1px solid var(--line); border-radius: var(--radius-page); background: var(--paper);
-  box-shadow: var(--shadow-drawer); color: var(--ink); font-size: 15px; line-height: 1.6; z-index: 55;
-  opacity: 0; transform: translateX(calc(100% + var(--edge) + 2px)); visibility: hidden; pointer-events: none;
-  transition: transform var(--drawer-duration) ease, opacity var(--drawer-duration) ease, visibility 0s var(--drawer-duration);
-  scrollbar-width: thin; scrollbar-color: #d4dedb transparent; scroll-padding-top: 160px;
-}
+.review-panel { position: fixed; inset: calc(var(--top) + var(--edge)) var(--edge) var(--edge) auto !important; width: var(--review-width); max-width: calc(100vw - var(--edge) * 2); margin: 0; padding: 0; height: auto !important; display: block !important; overflow: auto; overscroll-behavior: contain; border: 1px solid var(--line); border-radius: var(--radius-page); background: var(--paper); box-shadow: var(--shadow-drawer); color: var(--ink); font-size: 14px; line-height: 1.6; z-index: 55; opacity: 0; transform: translateX(calc(100% + var(--edge) + 2px)); visibility: hidden; pointer-events: none; transition: transform var(--drawer-duration) ease, opacity var(--drawer-duration) ease, visibility 0s var(--drawer-duration); scrollbar-width: thin; scrollbar-color: #d4dedb transparent; scroll-padding-top: 160px; }
 .review-panel[hidden] { display: none !important; }
 .review-open .review-panel { opacity: 1; transform: none; visibility: visible; pointer-events: auto; transition-delay: 0s; }
-.review-panel .review-panel-head {
-  position: sticky; top: 0; z-index: 6; margin: 0; padding: 16px 18px 13px;
-  border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: var(--paper);
-}
-.review-panel .review-panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.review-panel .review-panel-head { position: sticky; top: 0; z-index: 6; margin: 0; padding: 14px 16px 12px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: var(--paper); }
+.review-panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .review-panel .review-panel-heading h2 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: 0; }
-.review-panel .review-close { display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 0; border-radius: var(--radius-control); background: transparent; color: var(--muted); font-size: 21px; }
+.review-panel .review-mode { margin-left: auto; max-width: 125px; height: 30px; padding: 3px 7px; font: inherit; font-size: 12px; color: var(--body); background: #f8faf9; border: 1px solid var(--line); border-radius: var(--radius-control); }
+.review-panel .review-close { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: var(--radius-control); background: transparent; color: var(--muted); font-size: 21px; }
 .review-panel .review-close:hover { background: #f1f5f6; color: var(--ink); }
-.review-panel .review-filters { display: flex; width: auto; gap: 16px; margin: 9px 0 0; padding: 0; border: 0; border-radius: 0; background: none; }
-.review-panel .review-filters button { min-height: 32px; margin: 0; padding: 4px 0; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: none; box-shadow: none; color: var(--link); font-size: 13px; }
-.review-panel .review-filters button[aria-pressed="true"] { border-bottom-color: var(--accent); background: none; color: var(--accent); font-weight: 600; box-shadow: none; }
-.review-panel .review-filters button:hover { color: var(--link-hover); }
-.review-panel .review-panel-foot { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; margin: 0; padding: 10px 0 0; border: 0; border-radius: 0; background: none; font-size: 12px; line-height: 1.6; }
-.review-panel .review-panel-foot span { display: block; margin: 0; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
-.review-panel .review-list { position: static; inset: auto; margin: 0; padding: 0 18px; overflow: visible; min-height: 0; pointer-events: auto; }
-.review-panel .review-empty { position: static; top: auto; margin: 0; padding: 20px 0; color: var(--muted); font-size: 14px; line-height: 1.8; white-space: pre-line; }
-.review-panel .review-thread,
-.review-panel .review-thread.selected,
-.review-panel .review-thread.resolved {
-  position: relative; inset: auto; margin: 0; padding: 18px 0; border: 0; border-bottom: 1px solid var(--line);
-  border-radius: 0; background: transparent; box-shadow: none; scroll-margin-top: 160px;
-}
+.review-panel .review-filters { display: flex; width: auto; gap: 4px; margin: 10px 0 0; padding: 0; border: 0; border-radius: 0; background: none; }
+.review-panel .review-filters button { min-height: 30px; margin: 0; padding: 3px 8px; border: 0; border-radius: 4px; background: none; box-shadow: none; color: var(--muted); font-size: 12px; }
+.review-panel .review-filters button[aria-pressed="true"] { background: #edf3ef; color: var(--accent); font-weight: 600; }
+.review-panel .review-filters button:hover { background: #f1f5f3; }
+.review-panel .review-panel-foot { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; margin: 0; padding: 8px 0 0; border: 0; border-radius: 0; background: none; font-size: 11px; line-height: 1.6; }
+.review-panel .review-panel-foot span { display: block; margin: 0; color: var(--muted); overflow-wrap: anywhere; }
+.review-panel #review-export { padding: 2px 0; border: 0; border-radius: 0; background: none; color: var(--link); font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
+.review-panel #review-export:hover { color: var(--link-hover); }
+.review-mode-hint { margin: 7px 0 0; font-size: 11px; color: var(--muted); line-height: 1.5; }
+.review-panel .review-list { position: static; inset: auto; margin: 0; padding: 0 16px; overflow: visible; min-height: 0; pointer-events: auto; }
+.review-panel .review-empty { position: static; top: auto; margin: 0; padding: 18px 0; color: var(--muted); font-size: 13px; line-height: 1.8; white-space: pre-line; }
+.review-panel .review-thread, .review-panel .review-thread.selected, .review-panel .review-thread.resolved { position: relative; inset: auto; margin: 0; padding: 16px 0; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; box-shadow: none; scroll-margin-top: calc(var(--top) + 160px); }
 .review-panel .review-thread:last-child { border-bottom: 0; }
-.review-panel .review-thread.selected::before { content: ''; position: absolute; left: -18px; top: 18px; bottom: 18px; width: 2px; border-radius: 2px; background: var(--accent); }
-.review-panel .review-thread-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 12px; margin: 0; }
-.review-panel .review-intent { width: auto; max-width: 100%; height: 30px; margin: 0; padding: 3px 8px; border: 1px solid #d8e2de; border-radius: var(--radius-control); background: #f4f8f6; color: #315f51; font: inherit; font-size: 13px; line-height: 1.4; cursor: pointer; }
-.review-panel .review-complete { display: inline-flex; align-items: center; gap: 6px; min-height: 30px; margin: 0; color: #5f6e66; font-size: 12px; line-height: 1.5; cursor: pointer; }
-.review-panel .review-complete input { width: 15px; height: 15px; margin: 0; accent-color: var(--accent); cursor: pointer; }
-.review-panel .review-topic { display: block; margin: 8px 0 10px; color: var(--muted); font-size: 12px; line-height: 1.5; white-space: normal; overflow-wrap: anywhere; }
-.review-panel .review-quote { display: block; width: 100%; margin: 0; padding: 3px 0 3px 10px; border: 0; border-left: 2px solid #c6d6e5; border-radius: 0; background: transparent; color: var(--link); font-size: 13px; line-height: 1.65; text-align: left; text-decoration: underline; text-decoration-color: #adc3df; text-underline-offset: 3px; white-space: normal; max-height: 6.6em; overflow: auto; box-shadow: none; }
-.review-panel button.review-quote:hover { border-left-color: var(--link); background: none; color: var(--link-hover); text-decoration-color: currentColor; }
-.review-panel .review-message { margin: 14px 0 0; overflow-wrap: anywhere; }
+.review-panel .review-thread.is-hovered { background: #f8fafc; }
+.review-panel .review-thread.selected::before { content: ''; position: absolute; left: -16px; top: 16px; bottom: 16px; width: 2px; background: #6f92a7; }
+.review-panel .review-thread-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }
+.review-identity { min-width: 0; display: grid; gap: 2px; }
+.review-author-name { color: #35473e; font-size: 13px; font-weight: 600; overflow-wrap: anywhere; }
+.review-panel .review-identity time { margin: 0; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.review-panel .review-intent { width: auto; max-width: 100%; height: 28px; margin: 0; padding: 2px 7px; border: 1px solid #d8e2de; border-radius: 4px; background: #f6f9f7; color: #4c695a; font: inherit; font-size: 12px; line-height: 1.4; cursor: pointer; }
+.review-panel .review-complete { display: inline-flex; align-items: center; gap: 5px; min-height: 28px; margin: 0; color: #5f6e66; font-size: 12px; line-height: 1.5; cursor: pointer; }
+.review-panel .review-complete input { width: 14px; height: 14px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+.review-panel .review-topic { display: block; margin: 4px 0 9px; color: var(--muted); font-size: 11px; line-height: 1.5; white-space: normal; overflow-wrap: anywhere; }
+.review-context { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 4px 0 9px; }
+.review-panel .review-context .review-topic { min-width: 0; margin: 0; }
+.review-panel .review-context .review-intent { flex-shrink: 0; height: 24px; font-size: 11px; }
+.review-panel .review-quote { display: block; width: 100%; margin: 0; padding: 3px 0 3px 9px; border: 0; border-left: 2px solid #cbd7d0; border-radius: 0; background: none; color: #65736b; font-size: 12px; line-height: 1.65; text-align: left; text-decoration: none; white-space: normal; max-height: 5em; overflow: auto; box-shadow: none; }
+.review-panel button.review-quote:hover { border-left-color: #91ada0; background: #f5f8f6; color: #3e5c4b; }
+.review-panel .review-thread.selected .review-quote { max-height: none; }
+.review-panel .review-message { margin: 12px 0 0; overflow-wrap: anywhere; }
 .review-panel .review-message p { margin: 0; color: #304039; font-size: 14px; line-height: 1.7; letter-spacing: 0; white-space: pre-wrap; }
+.review-panel .review-thread:not(.selected) .review-message-main > p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden; }
+.review-panel .review-thread.resolved .review-message p { color: #6c7880; text-decoration: line-through; text-decoration-color: #86929a; }
 .review-panel .review-message-meta { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 4px 8px; margin-top: 4px; }
 .review-panel .review-message time { display: inline; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.5; font-variant-numeric: tabular-nums; }
-.review-panel .rsi-edit-message,
-.review-panel .review-thread-actions button,
-.review-panel .review-panel-foot button {
-  min-height: 30px; margin: 0; padding: 4px 0; border: 0; border-radius: 0; background: transparent;
-  color: var(--link); font-size: 12px; line-height: 1.5; box-shadow: none;
-  text-decoration: underline; text-decoration-color: #adc3df; text-underline-offset: 3px;
-}
-.review-panel .rsi-edit-message:hover,
-.review-panel .review-thread-actions button:hover,
-.review-panel .review-panel-foot button:hover { background: none; color: var(--link-hover); text-decoration-color: currentColor; }
-.review-panel .review-thread-actions { display: flex; align-items: center; gap: 18px; margin-top: 4px; padding: 0; border: 0; }
-.review-panel .review-thread-actions button:last-child { margin-left: auto; }
-.review-panel .review-thread-actions button[data-confirm="yes"] { color: #a04738; text-decoration-color: currentColor; }
-.review-panel .review-thread.resolved .review-message p { color: #6c7880; text-decoration: line-through; text-decoration-thickness: 1px; text-decoration-color: #86929a; }
-.review-panel .review-thread.resolved .review-quote { background: none; border-left-color: #c6d6e5; color: var(--link); }
-.review-panel .rsi-message-edit { margin: 0; }
-.review-panel .rsi-message-edit textarea,
-.review-panel .review-reply textarea,
-.review-panel .review-composer textarea { display: block; width: 100%; min-height: 84px; margin: 0; padding: 9px 10px; border: 1px solid #cbd8d0; border-radius: var(--radius-control); background: #fff; color: #304039; font: inherit; font-size: 14px; line-height: 1.6; resize: vertical; }
+.review-panel .rsi-edit-message, .review-panel .review-thread-actions button, .review-panel .review-expand { min-height: 28px; margin: 0; padding: 3px 7px; border: 0; border-radius: 4px; background: transparent; color: #486d5b; font-size: 12px; line-height: 1.5; box-shadow: none; text-decoration: none; }
+.review-panel .rsi-edit-message:hover, .review-panel .review-thread-actions button:hover, .review-panel .review-expand:hover { background: #edf3ef; color: #2d5d47; text-decoration: none; }
+.review-panel .review-thread-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; margin-top: 6px; padding: 0; border: 0; }
+.review-panel .review-thread-actions button:last-child { margin-left: auto; color: #7c7974; }
+.review-panel .review-thread-actions button[data-confirm="yes"] { background: #faf0ed; color: #a04738; }
+.review-panel .review-anchor-note { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; margin: 10px 0 0; padding: 0; color: #946d28; font-size: 12px; }
+.review-panel .review-anchor-note button { padding: 3px 7px; border: 1px solid #e4d9bd; background: #fbf9f4; border-radius: 4px; font-size: 12px; color: #80652e; text-decoration: none; }
+.review-panel .review-discussion { margin-top: 9px; border: 0; }
+.review-panel .review-discussion > summary { width: max-content; padding: 3px 0; font-size: 12px; color: #5f7669; cursor: pointer; }
+.review-panel .review-discussion .review-message { padding-top: 10px; border-top: 1px solid #edf1ee; }
+.review-panel .rsi-message-edit, .review-panel .review-reply { margin: 10px 0 0; }
+.review-panel textarea { display: block; width: 100%; min-height: 84px; margin: 0; padding: 9px 10px; border: 1px solid #cbd8d0; border-radius: var(--radius-control); background: #fff; color: #304039; font: inherit; font-size: 14px; line-height: 1.6; resize: vertical; }
 .review-panel textarea:focus { border-color: #709c87; outline: 2px solid #dcebe2; outline-offset: 1px; box-shadow: none; }
 .review-panel .review-form-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
-.review-panel .review-form-actions button { min-height: 34px; margin: 0; padding: 5px 12px; border: 1px solid #d8e0db; border-radius: var(--radius-control); background: #fff; color: #4d6055; font-size: 13px; font-weight: 500; line-height: 1.5; box-shadow: none; }
-.review-panel .review-form-actions button:hover { background: #f3f6f4; border-color: #b9cdc1; }
+.review-panel .review-form-actions button { min-height: 34px; margin: 0; padding: 5px 12px; border: 1px solid #d8e0db; border-radius: var(--radius-control); background: #fff; color: #4d6055; font-size: 13px; line-height: 1.5; box-shadow: none; }
 .review-panel .review-form-actions .primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-.review-panel .review-form-actions .primary:hover { background: #245e52; border-color: #245e52; }
-.review-panel .review-message + .review-message { margin-top: 12px; padding-top: 12px; border-top: 1px solid #edf1ee; }
-.review-panel .review-reply { margin: 12px 0 0; }
-.review-panel .review-composer { position: relative; inset: auto; margin: 0; padding: 18px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; box-shadow: none; }
-.review-panel .review-composer label { display: block; margin: 12px 0 8px; font-size: 14px; }
-.review-panel .review-composer .review-quote { color: var(--body); text-decoration: none; }
+.review-panel .review-composer { position: relative; inset: auto; margin: 0; padding: 16px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: #fff; box-shadow: none; }
+.review-panel .review-composer label { display: block; margin: 10px 0 5px; font-size: 12px; color: var(--body); }
+.review-panel .review-composer input { width: 100%; max-width: 100%; padding: 6px 8px; border: 1px solid var(--line); border-radius: var(--radius-control); font: inherit; font-size: 13px; background: #fff; color: var(--ink); }
+.review-anchored .review-panel { position: absolute; inset: auto var(--edge) auto auto !important; height: auto; overflow: visible; background: transparent; border: 0; border-radius: 0; box-shadow: none; }
+.review-open.review-anchored .review-panel { pointer-events: none; }
+.review-anchored .review-panel .review-panel-head { top: calc(var(--top) + var(--edge)); pointer-events: auto; border: 1px solid var(--line); border-radius: var(--radius-page); box-shadow: var(--shadow-drawer); }
+.review-anchored .review-panel .review-list { position: absolute; inset: 0; padding: 0; overflow: visible; pointer-events: none; }
+.review-anchored .review-panel .review-thread, .review-anchored .review-panel .review-composer { position: absolute; left: 0; right: 0; margin: 0; padding: 14px 16px; border: 1px solid #dfe6e2; border-radius: var(--radius-page); background: #fff; box-shadow: 0 1px 5px #26394308; pointer-events: auto; }
+.review-anchored .review-panel .review-thread.selected, .review-anchored .review-panel .review-thread.is-hovered { border-color: #91acbc; box-shadow: 0 2px 8px #2945560c; }
+.review-anchored .review-panel .review-thread.selected::before { display: none; }
+.review-anchored .review-panel .review-empty { position: absolute; left: 0; right: 0; padding: 18px 16px; border: 1px solid var(--line); border-radius: var(--radius-page); background: #fff; pointer-events: auto; }
+.review-anchored .review-panel .review-filters { display: none; }
+.review-anchored .review-panel .review-composer { z-index: 4; }
+.review-links { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 46; overflow: hidden; }
+.review-links path { fill: none; stroke: #89a6b8; stroke-width: 1.2; }
+.review-links circle { fill: #89a6b8; }
+.review-rebind-bar { position: fixed; top: calc(var(--top) + 6px); left: 50%; transform: translateX(-50%); z-index: 70; display: flex; align-items: center; gap: 12px; max-width: calc(100vw - 24px); padding: 8px 12px; border: 1px solid #d8cba8; border-radius: 6px; background: #fffdf6; color: #735e31; font-size: 12px; box-shadow: 0 2px 8px #26394310; }
+.review-rebind-bar button { flex-shrink: 0; padding: 3px 7px; font-size: 12px; }
 .review-scrim { display: none; }
-.review-open .document,
-.presenting.review-open .document { margin-right: calc(var(--review-width) + var(--edge) + var(--gap)); padding-right: 0; }
+.review-open .document, .presenting.review-open .document { margin-right: calc(var(--review-width) + var(--edge) + var(--gap)); padding-right: 0; }
 .review-editing .sidebar { top: calc(var(--top) + var(--edge)); }
 .review-editing .document { padding-top: calc(var(--top) + 14px); }
-.reading a:not(.case-jump):not(.site-brand) { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
-.report-zoom-button,
-.rsi-component-remove { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+::highlight(rsi-comments) { background: #edf1e5; color: inherit; }
+::highlight(rsi-completed) { background: #eef0ef; color: inherit; }
+::highlight(rsi-selected) { background: #dbe8f5; color: inherit; }
+mark[data-review-mark] { background: #edf1e5; }
+mark[data-review-mark].is-selected { background: #dbe8f5; }
+mark[data-review-mark].is-completed { background: #eef0ef; }
 @media (max-width: 900px) {
   .review-panel { width: min(var(--review-width), calc(100vw - var(--edge) * 2)); max-width: none; }
   .review-open .document, .presenting.review-open .document { margin-right: 0; padding-right: 20px; }
   .review-open .document::after { display: none; }
   .review-open .review-scrim { display: block; position: fixed; inset: var(--top) 0 0; z-index: 54; border: 0; border-radius: 0; padding: 0; background: #20343e25; cursor: default; }
+  .review-links { display: none; }
 }
 @media (max-width: 760px) {
   :root { --radius-page: 4px; }
-  .review-panel .review-panel-head { padding: 14px 16px 12px; }
-  .review-panel .review-list { padding: 0 16px; }
-  .review-panel .review-thread.selected::before { left: -16px; }
-  .review-panel .review-composer { padding: 16px; }
+  .review-panel .review-panel-head { padding: 12px 14px; }
+  .review-panel .review-list { padding: 0 14px; }
+  .review-panel .review-thread.selected::before { left: -14px; }
   .review-open .document, .presenting.review-open .document { padding-right: 12px; }
   .review-editing .document { padding-top: calc(var(--top) + 10px); }
 }
-@media (pointer: coarse) {
-  .review-panel .rsi-edit-message, .review-panel .review-thread-actions button,
-  .review-panel .review-form-actions button, .review-panel .review-panel-foot button,
-  .review-panel .review-complete, .review-panel .review-close { min-height: 36px; }
-}
+@media (pointer: coarse) { .review-panel .rsi-edit-message, .review-panel .review-thread-actions button, .review-panel .review-form-actions button, .review-panel .review-close { min-height: 36px; } }
 @media (prefers-reduced-motion: reduce) { .sidebar, .review-panel { transition: none; } }
-@media print { .review-panel, .review-scrim { display: none !important; } .review-open .document, .presenting.review-open .document { margin-right: 0; padding-right: 0; } }
+@media print { .review-panel, .review-scrim, .review-links, .review-rebind-bar { display: none !important; } .review-open .document, .presenting.review-open .document { margin-right: 0; padding-right: 0; } }
 </style>
 </head><body><a class="skip" href="#document">跳至正文</a><aside class="sidebar" id="report-sidebar" aria-label="报告目录"><div class="rail-heading"><strong>目录</strong><span>汇报目录</span></div><nav aria-label="多级标题目录"><ol><li><a href="#background">背景与问题</a><ol><li><a href="#background-main">背景与问题</a></li></ol></li><li><a href="#overview">概览</a><ol><li><a href="#overview-main">概览</a></li></ol></li><li><a href="#design">方案设计</a><ol><li><a href="#design-main">方案设计</a></li></ol></li><li><a href="#validation">验证与证据</a><ol><li><a href="#validation-main">验证与证据</a></li></ol></li><li><a href="#discussion">讨论</a><ol><li><a href="#discussion-main">讨论</a></li></ol></li><li><a href="#summary">总结</a><ol><li><a href="#summary-main">总结</a></li></ol></li></ol></nav><div class="rail-bottom"><span>单文件汇报</span><span id="rail-progress">01 / 06</span></div></aside><div class="scrim" id="scrim"></div><header class="topbar">
  <div class="nav-lead"><button class="menu" id="menu" aria-label="收起目录" aria-controls="report-sidebar" aria-expanded="true">目录</button><a class="site-brand" href="#background"><strong>离线汇报</strong><span>模板演示</span></a><span class="topbar-title" id="breadcrumb">离线汇报模板</span></div>
@@ -397,6 +396,7 @@ function queueFit(){
     const height=Math.ceil(document.querySelector('.topbar').getBoundingClientRect().height);
     document.documentElement.style.setProperty('--top',height+'px');
     document.documentElement.style.scrollPaddingTop=(height+18)+'px';
+    document.dispatchEvent(new Event('report-view-change'));
   });
 }
 function showTopic(i,target){
@@ -439,7 +439,7 @@ Object.assign(window,{queueFit,navigateTo,counter,currentTopic:()=>topics[curren
 counter();if(location.hash){const initialHash=location.hash,target=document.getElementById(initialHash.slice(1));if(target)requestAnimationFrame(()=>{if(location.hash===initialHash)navigateTo(target);});}
 },{once:true});
 </script>
-<script id="rsi-review-data" type="application/json">{"version":3,"threads":[{"id":"2af3a032-63a2-4a31-97da-345613e2950c","chapterId":"background-main","chapterTitle":"背景与问题","intent":"keep","anchors":[{"blockId":"b0003","start":0,"end":21,"quote":"把一份文档，变成可讲、可改、可讨论的汇报。","originalQuote":"把一份文档，变成可讲、可改、可讨论的汇报。","prefix":"","suffix":""}],"messages":[{"id":"f62a37d0-52cb-4ff0-9f06-0faf837e0074","text":"请保留这句结论。示例内容可以替换成自己的项目。","createdAt":"2026-11-25T04:24:00.669Z"}],"resolved":false}]}</script>
+<script id="rsi-review-data" type="application/json">{"version":4,"threads":[{"id":"2af3a032-63a2-4a31-97da-345613e2950c","chapterId":"background-main","chapterTitle":"背景与问题","intent":"keep","anchors":[{"blockId":"b0003","start":0,"end":21,"quote":"把一份文档，变成可讲、可改、可讨论的汇报。","originalQuote":"把一份文档，变成可讲、可改、可讨论的汇报。","prefix":"","suffix":""}],"messages":[{"id":"f62a37d0-52cb-4ff0-9f06-0faf837e0074","text":"请保留这句结论。示例内容可以替换成自己的项目。","createdAt":"2026-11-25T04:24:00.669Z","author":"模板作者"}],"resolved":false,"author":"模板作者"}],"preferences":{"viewMode":"anchored","author":"我"}}</script>
 <script id="rsi-review-runtime">
 document.addEventListener('DOMContentLoaded',()=>{
 (() => {
@@ -463,17 +463,93 @@ document.addEventListener('DOMContentLoaded',()=>{
   let state;
   try { state = JSON.parse($('#rsi-review-data').textContent); } catch { state = {version: 1, threads: []}; }
   if (!Array.isArray(state.threads)) state.threads = [];
+  state.preferences = state.preferences || {};
+  let viewMode = ['anchored','list'].includes(state.preferences.viewMode) ? state.preferences.viewMode : 'anchored';
+  let currentAuthor = state.preferences.author || '我';
   let expectedRevision = $('meta[name="rsi-file-revision"]').content;
   const documentId = $('meta[name="rsi-document-id"]')?.content;
   let dirty = false, editing = false, activeId = null, filter = 'all', pending = null, picked = null;
   let fileHandle = null, lastFileText = null, lastSavedFileText = null, revision = 0, saveBusy = false, restoreDrawer = false, toastTimer;
   let autoSaveTimer = 0, saveAgain = false, savePaused = false, panelCloseTimer = 0;
   const replyDrafts = new Map();
+  const oldEdits = new Map();
   const oldText = new Map(blocks.map(node => [node.dataset.reviewBlock, node.textContent]));
   const cssHighlights = typeof Highlight !== 'undefined' && !!window.CSS?.highlights;
   const uid = () => window.crypto?.randomUUID?.() || 'r' + Date.now().toString(36) + Math.random().toString(36).slice(2);
   const element = (tag, className, text) => { const node = document.createElement(tag); if (className) node.className = className; if (text !== undefined) node.textContent = text; return node; };
   const button = (text, action, className = '') => { const node = element('button', className, text); node.type = 'button'; node.addEventListener('click', action); return node; };
+  // BEGIN ANNOTATION LOGIC
+  function annotationTextHash(text) {
+    let hash=2166136261;
+    for(let i=0;i<text.length;i++)hash=Math.imul(hash^text.charCodeAt(i),16777619);
+    return (hash>>>0).toString(16);
+  }
+  function locateTextAnchor(text, anchor) {
+    const quote = anchor.quote || anchor.originalQuote;
+    if (!quote) return null;
+    const prefix = anchor.prefix || '', suffix = anchor.suffix || '';
+    const scoreAt = start => {
+      const before = text.slice(0, start), after = text.slice(start + quote.length);
+      let left = 0, right = 0;
+      while (left < prefix.length && left < before.length && prefix[prefix.length - left - 1] === before[before.length - left - 1]) left++;
+      while (right < suffix.length && right < after.length && suffix[right] === after[right]) right++;
+      return left + right;
+    };
+    if (anchor.textHash === annotationTextHash(text) && Number.isInteger(anchor.start) && text.slice(anchor.start, anchor.start + quote.length) === quote) {
+      return {start: anchor.start, end: anchor.start + quote.length, score: scoreAt(anchor.start)};
+    }
+    const hits = [];
+    for (let start = text.indexOf(quote); start >= 0; start = text.indexOf(quote, start + 1)) hits.push({start, end: start + quote.length, score: scoreAt(start)});
+    if (hits.length === 1) return hits[0];
+    hits.sort((a,b) => b.score - a.score);
+    return hits.length > 1 && hits[0].score > 0 && hits[0].score > hits[1].score ? hits[0] : null;
+  }
+  function shiftTextAnchor(anchor, before, after, editSpan = null) {
+    if (before === after || anchor.orphaned) return;
+    if(editSpan && editSpan.end > editSpan.start && editSpan.start <= anchor.start && editSpan.end >= anchor.end) {
+      const recovered=locateTextAnchor(after,{...anchor,start:-1,textHash:null});
+      anchor.edited=true;
+      if(!recovered){anchor.orphaned=true;anchor.reason='text-replaced';return;}
+      anchor.start=recovered.start;anchor.end=recovered.end;
+      anchor.quote=after.slice(anchor.start,anchor.end);anchor.prefix=after.slice(Math.max(0,anchor.start-24),anchor.start);anchor.suffix=after.slice(anchor.end,anchor.end+24);anchor.textHash=annotationTextHash(after);return;
+    }
+    let left = 0, right = 0;
+    while (left < before.length && left < after.length && before[left] === after[left]) left++;
+    while (right < before.length - left && right < after.length - left && before[before.length - right - 1] === after[after.length - right - 1]) right++;
+    const oldEnd = before.length - right, newEnd = after.length - right, delta = after.length - before.length;
+    if (oldEnd <= anchor.start) { anchor.start += delta; anchor.end += delta; }
+    else if (left < anchor.end) {
+      anchor.edited = true;
+      const surviving=before.slice(anchor.start,Math.min(anchor.end,left))+before.slice(Math.max(anchor.start,oldEnd),anchor.end);
+      if ((left <= anchor.start && oldEnd >= anchor.end) || !/[\p{L}\p{N}]/u.test(surviving)) {
+        const recovered = locateTextAnchor(after, {...anchor, start: -1});
+        if (!recovered) { anchor.orphaned = true; anchor.reason = 'text-removed'; return; }
+        anchor.start = recovered.start; anchor.end = recovered.end;
+      } else {
+        if(left >= anchor.start && oldEnd <= anchor.end) {
+          anchor.end += delta;
+        } else {
+          anchor.start = anchor.start < left ? anchor.start : newEnd;
+          anchor.end = anchor.end > oldEnd ? anchor.end + delta : left;
+        }
+        if (anchor.end <= anchor.start) { anchor.orphaned = true; anchor.reason = 'text-removed'; return; }
+      }
+    }
+    anchor.quote = after.slice(anchor.start, anchor.end);
+    anchor.prefix = after.slice(Math.max(0, anchor.start - 24), anchor.start);
+    anchor.suffix = after.slice(anchor.end, anchor.end + 24);
+    anchor.textHash = annotationTextHash(after);
+  }
+  function packAnnotationSlots(slots, minimum, gap = 12) {
+    let cursor = minimum;
+    return slots.map((slot,index) => ({...slot,index})).sort((a,b) => a.desired - b.desired || a.index - b.index).map(slot => {
+      const top = Math.max(cursor, slot.desired);
+      cursor = top + slot.height + gap;
+      return {...slot, top};
+    });
+  }
+  // END ANNOTATION LOGIC
+
   const tools = element('div', 'review-tools');
   tools.innerHTML = '<button id="review-toggle" type="button" aria-expanded="false" aria-controls="review-panel">批注 <span id="review-count">0</span></button><button id="review-edit" type="button" aria-pressed="false">编辑正文</button><button id="review-add" type="button" hidden>插入</button><div class="review-file-control"><button id="review-connect" class="review-connect" type="button" data-connected="false">连接原文件</button><details class="review-save-menu" id="review-save-menu"><summary aria-label="文件选项">⌄</summary><div class="review-save-options"><button id="review-save" type="button">连接原文件并自动保存</button><button id="review-disconnect" type="button" hidden>断开原文件</button><button id="review-download" type="button">导出 HTML 副本</button><button id="review-blank" type="button">创建空白模板</button><p id="review-save-help">选择当前这份 HTML 后，修改会自动写回原文件。每次重新打开页面需连接一次。</p><span class="review-status" id="review-status" role="status">尚未连接原文件</span></div></details></div>';
   $('.toolbar').insertBefore(tools, $('#present'));
@@ -482,12 +558,20 @@ document.addEventListener('DOMContentLoaded',()=>{
   panel.setAttribute('aria-label', '文档批注'); panel.setAttribute('aria-hidden', 'true'); panel.inert = true;
   const reviewScrim = button('关闭批注侧栏', () => closePanel(), 'review-scrim');
   reviewScrim.tabIndex = -1; reviewScrim.hidden = true; reviewScrim.setAttribute('aria-label', '关闭批注侧栏'); reviewScrim.textContent = '';
-  panel.innerHTML = '<div class="review-panel-head"><div class="review-panel-heading"><h2>批注</h2><button type="button" class="review-close" id="review-close" aria-label="关闭批注">×</button></div><div class="review-filters"><button type="button" id="review-all" aria-pressed="true">全部</button><button type="button" id="review-pending" aria-pressed="false">待处理</button></div><div class="review-panel-foot"><span id="review-file-status">连接原文件后自动保存。</span><button type="button" id="review-export">导出批注清单</button></div></div><form class="review-composer" id="review-composer" hidden><div class="review-quote" id="review-draft-quote"></div><label for="review-draft">添加批注</label><select id="review-intent" aria-label="批注意图"><option value="change">建议修改</option><option value="keep">请保留</option><option value="discuss">讨论</option></select><textarea id="review-draft" placeholder="写下修改建议、保留理由或讨论问题…" required></textarea><p class="review-error" id="review-draft-error" hidden></p><div class="review-form-actions"><button type="button" id="review-cancel">取消</button><button type="submit" class="primary">添加批注</button></div></form><div class="review-list" id="review-list"></div>';
+  panel.innerHTML = "<div class=\"review-panel-head\"><div class=\"review-panel-heading\"><h2>批注</h2><select id=\"review-mode\" class=\"review-mode\" aria-label=\"批注展示方式\"><option value=\"anchored\">随正文排列</option><option value=\"list\">集中列表</option></select><button type=\"button\" class=\"review-close\" id=\"review-close\" aria-label=\"关闭批注\">×</button></div><div class=\"review-filters\"><button type=\"button\" id=\"review-all\" aria-pressed=\"true\">全部</button><button type=\"button\" id=\"review-pending\" aria-pressed=\"false\">待处理</button><button type=\"button\" id=\"review-lost\" aria-pressed=\"false\">失联</button></div><p class=\"review-mode-hint\" id=\"review-mode-hint\"></p><div class=\"review-panel-foot\"><span id=\"review-file-status\">连接原文件后自动保存。</span><button type=\"button\" id=\"review-export\">导出批注清单</button></div></div><form class=\"review-composer\" id=\"review-composer\" hidden><div class=\"review-quote\" id=\"review-draft-quote\"></div><label for=\"review-author\">署名</label><input id=\"review-author\" name=\"author\" maxlength=\"40\" autocomplete=\"off\" placeholder=\"你的名字…\"><label for=\"review-draft\">添加批注</label><select id=\"review-intent\" aria-label=\"批注意图\"><option value=\"change\">建议修改</option><option value=\"keep\">请保留</option><option value=\"discuss\">讨论</option></select><textarea id=\"review-draft\" placeholder=\"写下修改建议、保留理由或讨论问题…\" required></textarea><p class=\"review-error\" id=\"review-draft-error\" hidden></p><div class=\"review-form-actions\"><button type=\"button\" id=\"review-cancel\">取消</button><button type=\"submit\" class=\"primary\">添加批注</button></div></form><div class=\"review-list\" id=\"review-list\"></div>";
   const floating = button('＋ 批注', () => startComment()); floating.className = 'review-selection'; floating.id = 'review-selection'; floating.hidden = true;
   floating.addEventListener('mousedown', event => event.preventDefault());
   const hint = element('div', 'review-edit-hint', '编辑模式 · 可修改正文、标题和表格文字 · 连接原文件后自动保存'); hint.hidden = true;
   const toast = element('div', 'review-toast'); toast.hidden = true; toast.setAttribute('role', 'status');
-  document.body.append(reviewScrim, panel, floating, hint, toast);
+  const rebindBar=element('div','review-rebind-bar');rebindBar.hidden=true;
+  rebindBar.append(element('span','','重新关联：选中新的正文，再点击“关联选区”。'),button('取消关联',cancelRebind));
+  const connector=document.createElementNS('http://www.w3.org/2000/svg','svg');connector.classList.add('review-links');connector.setAttribute('hidden','');connector.setAttribute('aria-hidden','true');
+  const connectorPath=document.createElementNS(connector.namespaceURI,'path'),connectorStart=document.createElementNS(connector.namespaceURI,'circle'),connectorEnd=document.createElementNS(connector.namespaceURI,'circle');
+  connectorStart.setAttribute('r','2');connectorEnd.setAttribute('r','2');connector.append(connectorPath,connectorStart,connectorEnd);
+  document.body.append(reviewScrim,panel,floating,hint,toast,rebindBar,connector);
+  $('#review-author').value=currentAuthor;
+  $('#review-author').addEventListener('input',()=>{currentAuthor=$('#review-author').value.trim()||'我';state.preferences.author=currentAuthor;changed();});
+
   const list = $('#review-list'), composer = $('#review-composer'), draft = $('#review-draft');
   function notify(message) { clearTimeout(toastTimer); toast.textContent = message; toast.hidden = false; toastTimer = setTimeout(() => { toast.hidden = true; }, 4500); }
   function displayStatus(message) {
@@ -500,12 +584,12 @@ document.addEventListener('DOMContentLoaded',()=>{
   function changed() { dirty = true; revision++; status.dataset.dirty = 'true'; displayStatus(fileHandle && !savePaused ? '等待写回原文件…' : '修改尚未写入原文件'); scheduleAutoSave(); }
   function saved(message, atRevision) { if (revision === atRevision) { dirty = false; status.dataset.dirty = 'false'; } displayStatus(dirty ? '等待写回原文件…' : message); }
   function openPanel() {
-    clearTimeout(panelCloseTimer); panel.hidden = false; panel.inert = false; panel.setAttribute('aria-hidden', 'false'); reviewScrim.hidden = false;
+    syncReviewMode(); clearTimeout(panelCloseTimer); panel.hidden = false; panel.inert = false; panel.setAttribute('aria-hidden', 'false'); reviewScrim.hidden = false;
     if (!document.body.classList.contains('review-open')) getComputedStyle(panel).transform;
     document.body.classList.add('review-open'); $('#review-toggle').setAttribute('aria-expanded', 'true');
     if (innerWidth > 1100 && innerWidth < 1400 && !document.body.classList.contains('nav-collapsed')) { $('#menu').click(); restoreDrawer = true; }
     if (document.body.classList.contains('nav-open')) $('#menu').click();
-    queueFit(); 
+    queueFit(); queueAnnotationLayout(); paint();
   }
   function closePanel() {
     document.body.classList.remove('review-open'); panel.inert = true; panel.setAttribute('aria-hidden', 'true'); reviewScrim.hidden = true;
@@ -514,8 +598,131 @@ document.addEventListener('DOMContentLoaded',()=>{
     else panelCloseTimer = setTimeout(() => { if (!document.body.classList.contains('review-open')) panel.hidden = true; }, 180); $('#review-toggle').setAttribute('aria-expanded', 'false');
     floating.hidden = true;
     if (restoreDrawer && document.body.classList.contains('nav-collapsed')) $('#menu').click();
-    restoreDrawer = false; queueFit();
+    restoreDrawer = false; hoverId=null;connector.setAttribute('hidden','');paint();queueFit();
   }
+  let annotationFrame = 0, connectorFrame = 0, hoverId = null, rebindThreadId = null, revealCardId = null;
+  const editDrafts = new Map();
+  function effectiveReviewMode() { return innerWidth <= 900 ? 'list' : viewMode; }
+  function syncReviewMode() {
+    document.body.classList.toggle('review-anchored', effectiveReviewMode() === 'anchored');
+    document.body.classList.toggle('review-list-mode', effectiveReviewMode() === 'list');
+    $('#review-mode').value = effectiveReviewMode();
+    $('#review-mode').disabled = innerWidth <= 900;
+    $('#review-mode').title = innerWidth <= 900 ? '窄屏使用集中列表，宽屏时恢复所选模式' : '选择批注展示方式';
+    $('#review-mode-hint').textContent = innerWidth <= 900 ? '窄屏以列表展示；定位后返回正文。' : effectiveReviewMode() === 'anchored' ? '随原文排列，重叠时自动避让。' : '集中查看、筛选与处理全部批注。';
+    if(Number(panel.dataset.lostCount || 0)>0)$('#review-mode-hint').textContent+=' '+panel.dataset.lostCount+' 条批注失去关联。';
+  }
+  function queueAnnotationLayout() {
+    cancelAnimationFrame(annotationFrame);
+    annotationFrame = requestAnimationFrame(layoutAnnotations);
+  }
+  function anchorRect(thread) {
+    for (const anchor of thread.anchors) {
+      const range = rangeFor(anchor);
+      if (!range) continue;
+      const rect = [...range.getClientRects()].find(rect => rect.width > 0 && rect.height > 0);
+      if (rect) return rect;
+    }
+    return null;
+  }
+  function layoutAnnotations() {
+    if (panel.hidden || !document.body.classList.contains('review-open')) return;
+    syncReviewMode();
+    const cards = [...list.querySelectorAll('.review-thread')], empty = list.querySelector('.review-empty');
+    const headHeight = $('.review-panel-head',panel).offsetHeight;
+    panel.style.setProperty('--review-head-height', headHeight + 'px');
+    if (effectiveReviewMode() === 'list') {
+      panel.style.removeProperty('top'); panel.style.removeProperty('height');
+      for (const node of [composer,...cards]) { node.style.removeProperty('top'); node.hidden = node === composer ? !pending : false; }
+      if (empty) empty.style.removeProperty('top');
+    } else {
+      const paperRect = $('.reading').getBoundingClientRect(), panelTop = paperRect.top + scrollY;
+      panel.style.setProperty('top', panelTop + 'px', 'important');
+      const slots = [], minimum = headHeight + 12;
+      let orphanIndex = 0, lastAnchor = minimum, visibleCount = 0;
+      const measured = [];
+      for (const card of cards) {
+        const thread = state.threads.find(thread => card.dataset.threadId === thread.id), rect = anchorRect(thread);
+        const lost = thread.anchors.some(anchor => !rangeFor(anchor));
+        card.hidden = !rect && !lost;
+        if (card.hidden) continue;
+        visibleCount++;
+        if (rect) lastAnchor = Math.max(lastAnchor, rect.top + scrollY - panelTop);
+        measured.push({node: card, rect, lost, height: card.offsetHeight});
+      }
+      for (const item of measured) slots.push({...item, desired: item.rect ? item.rect.top + scrollY - panelTop : Math.max(lastAnchor + 24, paperRect.height) + orphanIndex++ * 12});
+      if (!composer.hidden) {
+        const rect = pending?.map(anchor => { const r=rangeFor(anchor); return r && [...r.getClientRects()].find(rect => rect.width && rect.height); }).find(Boolean);
+        slots.unshift({node: composer, desired: rect ? rect.top + scrollY - panelTop : minimum, height: composer.offsetHeight});
+      }
+      const packed = packAnnotationSlots(slots, minimum);
+      for (const slot of packed) slot.node.style.top = Math.round(slot.top) + 'px';
+      if (empty) empty.style.top = minimum + 'px';
+      let sectionEmpty = $('#review-section-empty',list);
+      if (!visibleCount && cards.length) {
+        if (!sectionEmpty) { sectionEmpty=element('p','review-empty','本节没有批注。切换“集中列表”查看其他章节。'); sectionEmpty.id='review-section-empty'; list.append(sectionEmpty); }
+        sectionEmpty.style.top=minimum+'px';
+      } else sectionEmpty?.remove();
+      const height = Math.ceil(Math.max(paperRect.height, minimum + (empty || sectionEmpty ? 100 : 0), ...packed.map(slot=>slot.top+slot.height+16)));
+      panel.style.setProperty('height', height + 'px', 'important');
+    }
+    if (revealCardId) {
+      const card = document.getElementById('review-thread-' + revealCardId); revealCardId = null;
+      if (card && !card.hidden) {
+        const r=card.getBoundingClientRect(), limit=$('.review-panel-head',panel).getBoundingClientRect().bottom+8;
+        if (r.top < limit || r.bottom > innerHeight-16) card.scrollIntoView({block:'nearest',behavior:'instant'});
+      }
+    }
+    queueConnector();
+  }
+  const annotationResize = new ResizeObserver(queueAnnotationLayout);
+  annotationResize.observe($('.reading')); annotationResize.observe($('.review-panel-head',panel)); annotationResize.observe(composer);
+  document.addEventListener('report-view-change', queueAnnotationLayout);
+  window.addEventListener('resize', () => { syncReviewMode(); queueAnnotationLayout(); });
+  window.addEventListener('scroll', queueConnector, {passive:true});
+  panel.addEventListener('scroll', queueConnector, {passive:true});
+  document.fonts?.ready.then(queueAnnotationLayout);
+  function queueConnector() { cancelAnimationFrame(connectorFrame); connectorFrame=requestAnimationFrame(drawConnector); }
+  function drawConnector() {
+    connector.setAttribute('hidden','');
+    const id=hoverId || activeId;
+    if (!id || innerWidth<=900 || !document.body.classList.contains('review-open') || editing) return;
+    const thread=state.threads.find(thread=>thread.id===id), card=document.getElementById('review-thread-'+id), rect=thread && anchorRect(thread);
+    if (!card || card.hidden || !rect) return;
+    const cardRect=card.getBoundingClientRect(), paperRect=$('.reading').getBoundingClientRect(), headBottom=$('.topbar').getBoundingClientRect().bottom;
+    const y1=rect.top+rect.height/2, y2=cardRect.top+27, x1=paperRect.right+2, x2=cardRect.left-3;
+    if (x2<=x1 || y1<headBottom || y1>innerHeight || y2<headBottom || y2>innerHeight) return;
+    const mid=(x1+x2)/2;
+    connectorPath.setAttribute('d','M '+x1+' '+y1+' C '+mid+' '+y1+', '+mid+' '+y2+', '+x2+' '+y2);
+    connectorStart.setAttribute('cx',x1); connectorStart.setAttribute('cy',y1);
+    connectorEnd.setAttribute('cx',x2); connectorEnd.setAttribute('cy',y2);
+    connector.removeAttribute('hidden');
+  }
+  function setHover(id) {
+    if (id===hoverId) return; hoverId=id;
+    for (const card of list.querySelectorAll('.review-thread')) card.classList.toggle('is-hovered',card.dataset.threadId===id);
+    paint(); queueConnector();
+  }
+  function activateThread(id, reveal=false) {
+    if (activeId===id) { if(reveal){revealCardId=id;queueAnnotationLayout();} return; }
+    activeId=id; if(reveal)revealCardId=id; renderThreads(); paint();
+  }
+  function beginRebind(thread) {
+    rebindThreadId=thread.id; pending=null; composer.hidden=true; picked=null;
+    rebindBar.hidden=false; floating.textContent='关联选区';
+    closePanel(); notify('选中新的正文，再点击“关联选区”或按 Ctrl / ⌘ + Alt + M。');
+  }
+  function cancelRebind() { rebindThreadId=null;rebindBar.hidden=true;picked=null;floating.hidden=true;floating.textContent='＋ 批注'; }
+  function bindSelectionToThread(selection) {
+    const thread=state.threads.find(thread=>thread.id===rebindThreadId);
+    if (!thread || !selection?.anchors?.length) { notify('先选中要重新关联的正文。');return; }
+    thread.anchorHistory=(thread.anchorHistory||[]).concat([{at:new Date().toISOString(),anchors:structuredClone(thread.anchors)}]).slice(-5);
+    thread.anchors=structuredClone(selection.anchors);
+    const chapter=byId.get(thread.anchors[0].blockId)?.closest('.topic,.sheet');
+    thread.chapterId=chapter?.id;thread.chapterTitle=chapter?.dataset.title;
+    activeId=thread.id;filter='all';cancelRebind();window.getSelection()?.removeAllRanges();changed();openPanel();renderThreads();paint();notify('已重新关联，原来的批注和讨论均已保留。');
+  }
+
   function stripFallback() {
     const marks = [...document.querySelectorAll('mark[data-review-mark]')];
     marks.forEach(mark => mark.replaceWith(...mark.childNodes));
@@ -527,15 +734,19 @@ document.addEventListener('DOMContentLoaded',()=>{
     return nodes;
   }
   function rangeFor(anchor) {
-    const block = byId.get(anchor.blockId);
-    if (!block || anchor.orphaned || anchor.end <= anchor.start || anchor.end > block.textContent.length) return null;
-    if (block.textContent.slice(anchor.start, anchor.end) !== anchor.quote) return null;
-    const range = document.createRange(); let offset = 0, started = false;
-    for (const node of textNodes(block)) {
-      const end = offset + node.length;
-      if (!started && anchor.start <= end) { range.setStart(node, anchor.start - offset); started = true; }
-      if (started && anchor.end <= end) { range.setEnd(node, anchor.end - offset); return range; }
-      offset = end;
+    if(anchor.orphaned)return null;
+    let block=byId.get(anchor.blockId);
+    if(!block || !block.isConnected){anchor.orphaned=true;anchor.reason='paragraph-removed';return null;}
+    const found=locateTextAnchor(block.textContent,anchor);
+    if(!found){anchor.orphaned=true;anchor.reason='ambiguous-or-missing';return null;}
+    if(found.start!==anchor.start || found.end!==anchor.end){anchor.start=found.start;anchor.end=found.end;anchor.edited=true;}
+    anchor.textHash=annotationTextHash(block.textContent);
+    const range=document.createRange();let offset=0,started=false;
+    for(const node of textNodes(block)){
+      const end=offset+node.length;
+      if(!started && anchor.start<=end){range.setStart(node,anchor.start-offset);started=true;}
+      if(started && anchor.end<=end){range.setEnd(node,anchor.end-offset);return range;}
+      offset=end;
     }
     return null;
   }
@@ -544,7 +755,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     const ranges = {pending: [], done: [], active: []};
     for (const thread of state.threads) for (const anchor of thread.anchors) {
       const range = rangeFor(anchor); if (!range) continue;
-      ranges[thread.resolved ? 'done' : thread.id === activeId ? 'active' : 'pending'].push(range);
+      ranges[document.body.classList.contains('review-open') && thread.id === (hoverId || activeId) ? 'active' : thread.resolved ? 'done' : 'pending'].push(range);
     }
     if (cssHighlights) {
       CSS.highlights.set('rsi-comments', new Highlight(...ranges.pending)); CSS.highlights.set('rsi-completed', new Highlight(...ranges.done)); CSS.highlights.set('rsi-selected', new Highlight(...ranges.active));
@@ -556,7 +767,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         const block = byId.get(anchor.blockId); let offset = 0;
         for (const node of textNodes(block)) {
           const start = Math.max(0, anchor.start - offset), end = Math.min(node.length, anchor.end - offset);
-          if (end > start) { if (!cuts.has(node)) cuts.set(node, []); cuts.get(node).push({start, end, id: thread.id, done: thread.resolved}); }
+          if (end > start) { if (!cuts.has(node)) cuts.set(node, []); cuts.get(node).push({start, end, id: thread.id, done: thread.resolved, active: document.body.classList.contains('review-open') && thread.id === (hoverId || activeId)}); }
           offset += node.length;
         }
       }
@@ -565,7 +776,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         for (let i=0; i<points.length-1; i++) {
           const start=points[i], end=points[i+1], hits=segments.filter(x => x.start<=start && x.end>=end), text=node.data.slice(start,end);
           if (!hits.length) fragment.append(document.createTextNode(text));
-          else { const mark=element('mark', hits.every(x=>x.done)?'is-completed':hits.some(x=>x.id===activeId)?'is-selected':'',text); mark.dataset.reviewMark=hits.map(x=>x.id).join(' '); fragment.append(mark); }
+          else { const mark=element('mark', hits.some(x=>x.active)?'is-selected':hits.every(x=>x.done)?'is-completed':'',text); mark.dataset.reviewMark=hits.map(x=>x.id).join(' '); fragment.append(mark); }
         }
         node.replaceWith(fragment);
       }
@@ -583,7 +794,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       const quote = part.toString(); if (!quote.trim()) continue;
       const prefix = document.createRange(); prefix.selectNodeContents(block); prefix.setEnd(part.startContainer, part.startOffset);
       const start=prefix.toString().length, text=block.textContent;
-      anchors.push({blockId:block.dataset.reviewBlock,start,end:start+quote.length,quote,originalQuote:quote,prefix:text.slice(Math.max(0,start-24),start),suffix:text.slice(start+quote.length,start+quote.length+24)});
+      anchors.push({blockId:block.dataset.reviewBlock,start,end:start+quote.length,quote,originalQuote:quote,prefix:text.slice(Math.max(0,start-24),start),suffix:text.slice(start+quote.length,start+quote.length+24),textHash:annotationTextHash(text)});
     }
     return anchors.length ? {anchors, rect: range.getBoundingClientRect()} : null;
   }
@@ -597,10 +808,12 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.addEventListener('selectionchange', () => { if (!panel.contains(document.activeElement)) selectionChanged(); });
   window.addEventListener('scroll', () => { floating.hidden=true; }, {passive:true});
   function startComment() {
-    if(pending){openPanel();composer.hidden=false;draft.focus();notify('已恢复未提交的批注；提交或取消后可添加另一条。');return;}
-    const selection=picked || captureSelection(); if (!selection) { notify('先选中需要批注的正文。'); return; }
-    pending=structuredClone(selection.anchors); picked=null; floating.hidden=true; openPanel();
-    $('#review-draft-quote').textContent=pending.map(a=>a.quote).join('\n'); draft.value=''; $('#review-intent').value='change'; $('#review-draft-error').hidden=true; composer.hidden=false; draft.focus();
+    if(rebindThreadId){bindSelectionToThread(picked||captureSelection());return;}
+    if(pending){openPanel();composer.hidden=false;queueAnnotationLayout();requestAnimationFrame(()=>draft.focus({preventScroll:true}));notify('已恢复未提交的批注。');return;}
+    const selection=picked||captureSelection();if(!selection){notify('先选中需要批注的正文。');return;}
+    pending=structuredClone(selection.anchors);picked=null;floating.hidden=true;openPanel();
+    $('#review-draft-quote').textContent=pending.map(anchor=>anchor.quote).join('\n');draft.value='';$('#review-intent').value='change';$('#review-draft-error').hidden=true;composer.hidden=false;
+    queueAnnotationLayout();requestAnimationFrame(()=>draft.focus({preventScroll:true}));
   }
   const intentLabels={change:'建议修改',keep:'请保留',discuss:'讨论'};
   function locationLabel(thread) {
@@ -608,90 +821,97 @@ document.addEventListener('DOMContentLoaded',()=>{
     return target ? [target.dataset.tocNumber, target.dataset.title].filter(Boolean).join(' ') : (thread.chapterTitle ? thread.chapterTitle+' · 原文待定位' : '原文待定位');
   }
   function jumpTo(thread) {
-    activeId=thread.id; const anchor=thread.anchors.find(a=>rangeFor(a)), block=byId.get((anchor||thread.anchors[0])?.blockId);
-    if(block){navigateTo(block.closest('.topic,.case-study,.sheet'));requestAnimationFrame(()=>block.scrollIntoView({block:'center'}));}
-    paint(); renderThreads();
-    $('#review-thread-'+thread.id)?.scrollIntoView({block:'nearest'});
+    const anchor=thread.anchors.find(anchor=>rangeFor(anchor)),block=byId.get(anchor?.blockId);
+    activeId=thread.id;hoverId=null;
+    if(!block){openPanel();renderThreads();paint();notify('这条批注已失去关联，请先重新关联。');return;}
+    navigateTo(block.closest('.topic,.sheet'));renderThreads();paint();
+    requestAnimationFrame(()=>{block.scrollIntoView({block:'center',behavior:'instant'});queueAnnotationLayout();});
+    if(innerWidth<=900)closePanel();
+  }
+  function focusThreadInput(id,selector){queueAnnotationLayout();requestAnimationFrame(()=>document.getElementById('review-thread-'+id)?.querySelector(selector)?.focus());}
+  function setResolved(thread, value) {
+    thread.resolved=value;
+    if(value){thread.resolvedAt=new Date().toISOString();thread.resolvedBy=currentAuthor;}else{delete thread.resolvedAt;delete thread.resolvedBy;}
+    changed();paint();renderThreads();
+    (document.getElementById('review-thread-'+thread.id)?.querySelector('input[type=checkbox]') || $('#review-pending')).focus({preventScroll:true});
+  }
+  function renderMessage(message, thread, first) {
+    const row=element('div','review-message'+(first?' review-message-main':''));
+    const editingMessage=editDrafts.get(message.id);
+    if (editingMessage) {
+      const form=element('form','rsi-message-edit'), input=element('textarea');
+      input.setAttribute('aria-label','编辑批注文字');input.rows=4;input.required=true;input.value=editingMessage.text;
+      input.addEventListener('input',()=>{editingMessage.text=input.value;});
+      const actions=element('div','review-form-actions'), submit=element('button','primary','保存批注');submit.type='submit';
+      const cancel=()=>{editDrafts.delete(message.id);renderThreads();document.getElementById('review-thread-'+thread.id)?.focus({preventScroll:true});};
+      actions.append(button('取消',cancel),submit);form.append(input,actions);
+      form.addEventListener('submit',event=>{event.preventDefault();const text=input.value.trim();if(!text)return;message.text=text;message.editedAt=new Date().toISOString();editDrafts.delete(message.id);changed();renderThreads();});
+      form.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();cancel();}});
+      row.append(form);return row;
+    }
+    const content=element('p','',message.text), meta=element('div','review-message-meta');
+    if(!first){const author=element('span','review-author-name',message.author||'未署名');const time=element('time','',new Date(message.createdAt).toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}));time.dateTime=message.createdAt;meta.append(author,time);}
+    const edit=button('编辑',()=>{activeId=thread.id;editDrafts.set(message.id,{text:message.text,originalText:message.text});renderThreads();focusThreadInput(thread.id,'.rsi-message-edit textarea');},'rsi-edit-message');
+    meta.append(edit);row.append(content);
+    if(first && (message.text.length>140 || message.text.split('\n').length>4) && activeId!==thread.id) row.append(button('展开全文',()=>activateThread(thread.id),'review-expand'));
+    row.append(meta);return row;
   }
   function renderThreads() {
-    const unresolved=state.threads.filter(t=>!t.resolved).length; $('#review-count').textContent=String(state.threads.length);
-    $('#review-all').textContent='全部 '+state.threads.length; $('#review-pending').textContent='待处理 '+unresolved;
-    $('#review-all').setAttribute('aria-pressed',String(filter==='all')); $('#review-pending').setAttribute('aria-pressed',String(filter==='pending'));
-    list.replaceChildren(); const visible=state.threads.filter(t=>filter==='all'||!t.resolved);
-    if (!visible.length) { list.append(element('p','review-empty',state.threads.length?'当前没有待处理批注。':'选中正文中的文字，点击“＋ 批注”。\n也可以使用 Ctrl / ⌘ + Alt + M。'));return; }
-    for (const thread of visible) {
-      const card=element('article','review-thread'+(thread.resolved?' resolved':'')+(thread.id===activeId?' selected':'')); card.id='review-thread-'+thread.id;card.tabIndex=-1;
-      const top=element('div','review-thread-top'), place=element('span','review-topic',locationLabel(thread)); place.title=place.textContent;
-      const complete=element('label','review-complete'), check=element('input'); check.type='checkbox'; check.checked=!!thread.resolved; check.setAttribute('aria-label','标记批注已完成');
-      check.addEventListener('change',()=>{thread.resolved=check.checked;changed();paint();renderThreads();(document.getElementById('review-thread-'+thread.id)?.querySelector('input[type=checkbox]')||$('#review-pending')).focus({preventScroll:true});}); complete.append(check,document.createTextNode('已完成')); 
-      const intent=element('select','review-intent');
-      intent.setAttribute('aria-label','批注意图');
-      for(const [value,label] of Object.entries(intentLabels)){
-        const option=element('option','',label);option.value=value;intent.append(option);
+    const unresolved=state.threads.filter(thread=>!thread.resolved).length;
+    const lost=state.threads.filter(thread=>thread.anchors.some(anchor=>!rangeFor(anchor))).length;
+    panel.dataset.lostCount=String(lost);
+    $('#review-count').textContent=String(state.threads.length);
+    $('#review-all').textContent='全部 '+state.threads.length;$('#review-pending').textContent='待处理 '+unresolved;$('#review-lost').textContent='失联 '+lost;
+    for(const [id,value] of [['review-all','all'],['review-pending','pending'],['review-lost','lost']])$('#'+id).setAttribute('aria-pressed',String(filter===value));
+    annotationResize.disconnect();annotationResize.observe($('.reading'));annotationResize.observe($('.review-panel-head',panel));annotationResize.observe(composer);
+    list.replaceChildren();
+    const visible=state.threads.filter(thread=>filter==='all'||filter==='pending'&&!thread.resolved||filter==='lost'&&thread.anchors.some(anchor=>!rangeFor(anchor)));
+    if(!visible.length){list.append(element('p','review-empty',state.threads.length?(filter==='lost'?'没有失去关联的批注。':'当前没有待处理批注。'):'选中正文中的文字，点击“＋ 批注”。\n也可以使用 Ctrl / ⌘ + Alt + M。'));queueAnnotationLayout();return;}
+    for(const thread of visible){
+      const selected=thread.id===activeId, card=element('article','review-thread'+(thread.resolved?' resolved':'')+(selected?' selected':'')+(hoverId===thread.id?' is-hovered':''));
+      card.id='review-thread-'+thread.id;card.dataset.threadId=thread.id;card.tabIndex=0;card.setAttribute('aria-label',(thread.messages[0]?.author||thread.author||'未署名')+'的批注');
+      const top=element('div','review-thread-top'), identity=element('div','review-identity');
+      identity.append(element('span','review-author-name',thread.messages[0]?.author||thread.author||'未署名'));
+      const created=thread.messages[0]?.createdAt;
+      if(created){const time=element('time','',new Date(created).toLocaleString('zh-CN',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}));time.dateTime=created;identity.append(time);}
+      const complete=element('label','review-complete'), check=element('input');check.type='checkbox';check.checked=!!thread.resolved;check.setAttribute('aria-label','标记批注已解决');
+      check.addEventListener('change',()=>setResolved(thread,check.checked));complete.append(check,document.createTextNode(thread.resolved?'已解决':'解决'));top.append(identity,complete);card.append(top);
+      const context=element('div','review-context'),place=element('span','review-topic',locationLabel(thread)),intent=element('select','review-intent');
+      intent.setAttribute('aria-label','批注意图');for(const [value,label] of Object.entries(intentLabels)){const option=element('option','',label);option.value=value;intent.append(option);}intent.value=thread.intent||'discuss';
+      intent.addEventListener('change',()=>{thread.intent=intent.value;changed();});context.append(place,intent);card.append(context);
+      const quote=button(thread.anchors.map(anchor=>anchor.originalQuote||anchor.quote).join('\n'),()=>jumpTo(thread),'review-quote');quote.title='定位到正文';card.append(quote);
+      const orphaned=thread.anchors.filter(anchor=>!rangeFor(anchor));
+      if(orphaned.length){const warning=element('div','review-anchor-note');warning.append(element('span','',orphaned.length===thread.anchors.length?'失去关联 · 原文已删除或无法准确匹配':'部分原文失去关联'));warning.append(button('重新关联',()=>beginRebind(thread)));card.append(warning);}
+      else if(thread.anchors.some(anchor=>anchor.edited))card.append(element('p','review-anchor-note','原文已修改，定位已更新。'));
+      if(thread.messages[0])card.append(renderMessage(thread.messages[0],thread,true));
+      if(thread.messages.length>1){const discussion=element('details','review-discussion'), summary=element('summary','',String(thread.messages.length-1)+' 条回复');discussion.open=selected;discussion.append(summary);thread.messages.slice(1).forEach(message=>discussion.append(renderMessage(message,thread,false)));discussion.addEventListener('toggle',queueAnnotationLayout);card.append(discussion);}
+      const actions=element('div','review-thread-actions');
+      actions.append(button('定位正文',()=>jumpTo(thread)));
+      actions.append(button('回复',()=>{activeId=thread.id;const reply=replyDrafts.get(thread.id)||{text:'',open:false};reply.open=true;replyDrafts.set(thread.id,reply);renderThreads();focusThreadInput(thread.id,'.review-reply textarea');}));
+      if(thread.resolved)actions.append(button('重新打开',()=>setResolved(thread,false)));
+      else if(selected)actions.append(button('收起',()=>{activeId=null;hoverId=null;renderThreads();paint();}));
+      const remove=button('删除',()=>{if(remove.dataset.confirm!=='yes'){remove.dataset.confirm='yes';remove.textContent='确认删除';return;}replyDrafts.delete(thread.id);thread.messages.forEach(message=>editDrafts.delete(message.id));state.threads=state.threads.filter(item=>item.id!==thread.id);if(activeId===thread.id)activeId=null;hoverId=null;changed();renderThreads();paint();});actions.append(remove);card.append(actions);
+      const reply=replyDrafts.get(thread.id);
+      if(reply?.open){const form=element('form','review-reply'), label=element('p','review-topic','以“'+currentAuthor+'”回复'), input=element('textarea');input.placeholder='回复这条批注';input.setAttribute('aria-label','回复批注');input.required=true;input.value=reply.text;input.addEventListener('input',()=>{reply.text=input.value;});
+        const buttons=element('div','review-form-actions'), submit=element('button','primary','发送回复');submit.type='submit';buttons.append(button('取消',()=>{replyDrafts.delete(thread.id);renderThreads();}),submit);form.append(label,input,buttons);
+        form.addEventListener('submit',event=>{event.preventDefault();const text=input.value.trim();if(!text)return;thread.messages.push({id:uid(),author:currentAuthor,text,createdAt:new Date().toISOString()});replyDrafts.delete(thread.id);changed();renderThreads();});card.append(form);
       }
-      intent.value=thread.intent||'discuss';
-      intent.addEventListener('change',()=>{thread.intent=intent.value;changed();});
-      top.append(intent,complete);
-      const quote=button(thread.anchors.map(a=>a.originalQuote||a.quote).join('\n'),()=>jumpTo(thread),'review-quote'); quote.title='跳转到正文'; card.append(top,place,quote);
-      if (thread.anchors.some(a=>!rangeFor(a))) card.append(element('p','review-anchor-note','原文已删除或改变，批注保留，需重新核对。'));
-      else if (thread.anchors.some(a=>a.edited)) card.append(element('p','review-anchor-note','原文已修改，批注仍保留。'));
-      for (const message of thread.messages) {
-        const row=element('div','review-message');
-        const time=element('time','',new Date(message.createdAt).toLocaleString('zh-CN',{
-          month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'
-        }));
-        time.dateTime=message.createdAt;
-        const messageText=element('p','',message.text);
-        const metadata=element('div','review-message-meta');
-        const edit=button('编辑',()=>{
-          if(row.querySelector('form'))return;
-          const form=element('form','rsi-message-edit');
-          const input=element('textarea');
-          input.setAttribute('aria-label','编辑批注文字');
-          input.rows=3;input.value=message.text;input.required=true;
-          const closeEdit=()=>{
-            form.remove();messageText.hidden=false;metadata.hidden=false;
-            row.classList.remove('is-editing');edit.focus();
-          };
-          const actions=element('div','review-form-actions');
-          const submit=element('button','primary','保存批注');submit.type='submit';
-          actions.append(button('取消',closeEdit),submit);
-          form.append(input,actions);
-          form.addEventListener('submit',event=>{
-            event.preventDefault();const next=input.value.trim();if(!next)return;
-            message.text=next;message.editedAt=new Date().toISOString();
-            changed();renderThreads();
-            document.getElementById('review-thread-'+thread.id)?.focus({preventScroll:true});
-          });
-          form.addEventListener('keydown',event=>{
-            if(event.key==='Escape'){
-              event.preventDefault();event.stopPropagation();closeEdit();
-            }
-          });
-          messageText.hidden=true;metadata.hidden=true;row.classList.add('is-editing');
-          row.append(form);input.focus();
-        },'rsi-edit-message');
-        metadata.append(time,edit);
-        row.append(messageText,metadata);card.append(row);
-      }
-      const replyDraft=replyDrafts.get(thread.id)||{text:'',open:false};
-      const actions=element('div','review-thread-actions'), replyForm=element('form','review-reply'); replyForm.hidden=!replyDraft.open;
-      const replyBox=element('textarea'); replyBox.placeholder='回复这条批注'; replyBox.setAttribute('aria-label','回复批注'); replyBox.required=true;replyBox.value=replyDraft.text;
-      replyBox.addEventListener('input',()=>{replyDraft.text=replyBox.value;replyDrafts.set(thread.id,replyDraft);});
-      const replyActions=element('div','review-form-actions'); const submit=element('button','primary','回复'); submit.type='submit'; replyActions.append(button('取消',()=>{replyDrafts.delete(thread.id);replyDraft.text='';replyDraft.open=false;replyBox.value='';replyForm.hidden=true;}),submit); replyForm.append(replyBox,replyActions);
-      replyForm.addEventListener('submit',event=>{event.preventDefault();const text=replyBox.value.trim();if(!text)return;thread.messages.push({id:uid(),text,createdAt:new Date().toISOString()});replyDrafts.delete(thread.id);changed();renderThreads();});
-      actions.append(button('回复',()=>{replyDraft.open=true;replyDrafts.set(thread.id,replyDraft);replyForm.hidden=false;replyBox.focus();}));
-      const remove=button('删除',()=>{ if(remove.dataset.confirm!=='yes'){remove.dataset.confirm='yes';remove.textContent='确认删除';return;}replyDrafts.delete(thread.id);state.threads=state.threads.filter(t=>t.id!==thread.id);if(activeId===thread.id)activeId=null;changed();paint();renderThreads();}); actions.append(remove);card.append(actions,replyForm);list.append(card);
+      card.addEventListener('pointerenter',()=>setHover(thread.id));card.addEventListener('pointerleave',()=>setHover(null));
+      card.addEventListener('click',event=>{if(window.getSelection()?.toString())return;if(!event.target.closest('button,input,textarea,select,summary,a,form'))activateThread(thread.id);});
+      card.addEventListener('keydown',event=>{if(event.target===card&&(event.key==='Enter'||event.key===' ')){event.preventDefault();activateThread(thread.id);}});
+      card.addEventListener('focus',()=>setHover(thread.id));card.addEventListener('blur',()=>setHover(null));
+      list.append(card);annotationResize.observe(card);
     }
-    
+    queueAnnotationLayout();queueConnector();
   }
+
   composer.addEventListener('submit',event=>{
-    event.preventDefault();const text=draft.value.trim();if(!text||!pending)return;
+    event.preventDefault();const text=draft.value.trim();if(!text||!pending)return;currentAuthor=$('#review-author').value.trim()||'我';state.preferences.author=currentAuthor;
     const chapter=byId.get(pending[0].blockId)?.closest('.topic,.case-study,.sheet');
-    const thread={id:uid(),chapterId:chapter?.id,chapterTitle:chapter?.dataset.title,intent:$('#review-intent').value,anchors:pending,messages:[{id:uid(),text,createdAt:new Date().toISOString()}],resolved:false};
-    state.threads.push(thread);activeId=thread.id;pending=null;draft.value='';composer.hidden=true;changed();window.getSelection()?.removeAllRanges();paint();renderThreads();
+    const thread={id:uid(),chapterId:chapter?.id,chapterTitle:chapter?.dataset.title,intent:$('#review-intent').value,anchors:pending,author:currentAuthor,messages:[{id:uid(),author:currentAuthor,text,createdAt:new Date().toISOString()}],resolved:false};
+    state.threads.push(thread);activeId=thread.id;pending=null;draft.value='';composer.hidden=true;changed();window.getSelection()?.removeAllRanges();paint();renderThreads();queueAnnotationLayout();
   });
-  $('#review-cancel').addEventListener('click',()=>{composer.hidden=true;pending=null;draft.value='';window.getSelection()?.removeAllRanges();});
+  $('#review-cancel').addEventListener('click',()=>{composer.hidden=true;pending=null;draft.value='';window.getSelection()?.removeAllRanges();queueAnnotationLayout();});
   $('#review-toggle').addEventListener('click',()=>{if(!document.body.classList.contains('review-open')){openPanel();renderThreads();}else closePanel();});
   $('#review-close').addEventListener('click',()=>{closePanel();$('#review-toggle').focus();});
   document.addEventListener('keydown', event => {
@@ -699,57 +919,60 @@ document.addEventListener('DOMContentLoaded',()=>{
     event.preventDefault(); closePanel(); $('#review-toggle').focus();
   });
   $('#menu').addEventListener('click', () => { if (document.body.classList.contains('nav-open') && document.body.classList.contains('review-open')) closePanel(); });
-  $('#review-all').addEventListener('click',()=>{filter='all';renderThreads();});$('#review-pending').addEventListener('click',()=>{filter='pending';renderThreads();});
-  $('#document').addEventListener('click',event=>{
-    if(editing||window.getSelection()?.toString())return;
-    const block=event.target.closest('[data-review-block]');if(!block)return;
+  for(const [id,value] of [['review-all','all'],['review-pending','pending'],['review-lost','lost']])$('#'+id).addEventListener('click',()=>{filter=value;renderThreads();});
+  $('#review-mode').addEventListener('change',()=>{viewMode=$('#review-mode').value;state.preferences.viewMode=viewMode;filter='all';hoverId=null;syncReviewMode();changed();renderThreads();paint();queueFit();});
+
+  function threadAtPoint(event) {
+    const block=event.target.closest('[data-review-block]');if(!block)return null;
     for(const thread of state.threads)for(const anchor of thread.anchors){
       if(anchor.blockId!==block.dataset.reviewBlock)continue;
       const range=rangeFor(anchor);if(!range)continue;
-      if([...range.getClientRects()].some(rect=>event.clientX>=rect.left&&event.clientX<=rect.right&&event.clientY>=rect.top&&event.clientY<=rect.bottom)){
-        activeId=thread.id;filter='all';openPanel();paint();renderThreads();$('#review-thread-'+thread.id)?.scrollIntoView({block:'nearest'});return;
-      }
+      if([...range.getClientRects()].some(rect=>event.clientX>=rect.left && event.clientX<=rect.right && event.clientY>=rect.top && event.clientY<=rect.bottom))return thread;
     }
+    return null;
+  }
+  $('#document').addEventListener('click',event=>{
+    if(editing || rebindThreadId || window.getSelection()?.toString())return;
+    const thread=threadAtPoint(event);if(!thread)return;
+    filter='all';activeId=thread.id;openPanel();renderThreads();paint();revealCardId=thread.id;queueAnnotationLayout();
   });
+  let pointerFrame=0;
+  $('#document').addEventListener('pointermove',event=>{
+    if(editing || event.buttons || !document.body.classList.contains('review-open'))return;
+    cancelAnimationFrame(pointerFrame);const point={target:event.target,clientX:event.clientX,clientY:event.clientY};
+    pointerFrame=requestAnimationFrame(()=>setHover(threadAtPoint(point)?.id||null));
+  });
+  $('#document').addEventListener('pointerleave',()=>{if(!panel.matches(':hover'))setHover(null);});
   function syncTitle(node) {
     if (!node.classList.contains('heading-text')) return;
     const target=node.closest('.topic,.case-study,.sheet');if(!target)return;target.dataset.title=node.textContent.trim();
     const link=document.querySelector('nav a[href="#'+target.id+'"] .toc-text');if(link)link.textContent=target.dataset.title;counter();
   }
-  function updateAnchors(block, before, after) {
-    if(before===after)return;let left=0,right=0;while(left<before.length&&left<after.length&&before[left]===after[left])left++;
-    while(right<before.length-left&&right<after.length-left&&before[before.length-1-right]===after[after.length-1-right])right++;
-    const oldEnd=before.length-right,newEnd=after.length-right,delta=after.length-before.length;
+  function updateAnchors(block,before,after) {
     const anchors=state.threads.flatMap(thread=>thread.anchors).concat(pending||[]);
-    for(const anchor of anchors){
-      if(anchor.blockId!==block.dataset.reviewBlock||anchor.orphaned)continue;
-      if(oldEnd<=anchor.start){anchor.start+=delta;anchor.end+=delta;}
-      else if(left<anchor.end){
-        anchor.edited=true;
-        if(left<=anchor.start&&oldEnd>=anchor.end){anchor.orphaned=true;continue;}
-        anchor.start=anchor.start<left?anchor.start:newEnd;
-        anchor.end=anchor.end>oldEnd?anchor.end+delta:left;
-        if(anchor.end<=anchor.start){anchor.orphaned=true;continue;}
-      }
-      anchor.quote=after.slice(anchor.start,anchor.end);
-      anchor.prefix=after.slice(Math.max(0,anchor.start-24),anchor.start);
-      anchor.suffix=after.slice(anchor.end,anchor.end+24);
-    }
+    for(const anchor of anchors)if(anchor.blockId===block.dataset.reviewBlock)shiftTextAnchor(anchor,before,after,oldEdits.get(block.dataset.reviewBlock));
+    oldEdits.delete(block.dataset.reviewBlock);
   }
   function setEditing(value) {
     editing=value;$('#review-add').hidden=!value;document.body.classList.toggle('review-editing',value);hint.hidden=!value;$('#review-edit').setAttribute('aria-pressed',String(value));$('#review-edit').textContent=value?'结束编辑':'编辑正文';
     stripFallback();for(const block of blocks){if(value){block.setAttribute('contenteditable','true');block.setAttribute('spellcheck','false');}else{block.removeAttribute('contenteditable');block.removeAttribute('spellcheck');}}
-    window.getSelection()?.removeAllRanges();floating.hidden=true;paint();queueFit();
+    window.getSelection()?.removeAllRanges();floating.hidden=true;paint();queueFit();queueAnnotationLayout();
   }
   $('#review-edit').addEventListener('click',()=>setEditing(!editing));
   function bindEditable(block){
-    block.addEventListener('beforeinput',()=>{oldText.set(block.dataset.reviewBlock,block.textContent);});
+    block.addEventListener('beforeinput',event=>{
+      oldText.set(block.dataset.reviewBlock,block.textContent);oldEdits.delete(block.dataset.reviewBlock);
+      const target=event.getTargetRanges?.()[0] || (window.getSelection()?.rangeCount?window.getSelection().getRangeAt(0):null);
+      if(!target || !block.contains(target.startContainer) || !block.contains(target.endContainer))return;
+      const range=document.createRange();range.selectNodeContents(block);range.setEnd(target.startContainer,target.startOffset);const start=range.toString().length;
+      range.setEnd(target.endContainer,target.endOffset);oldEdits.set(block.dataset.reviewBlock,{start,end:range.toString().length});
+    });
     block.addEventListener('input',event=>{
       const before=oldText.get(block.dataset.reviewBlock)||'',after=block.textContent;
       updateAnchors(block,before,after);oldText.set(block.dataset.reviewBlock,after);syncTitle(block);
-      if(!event.isComposing){changed();paint();}
+      if(!event.isComposing){changed();paint();renderThreads();queueAnnotationLayout();}
     });
-    block.addEventListener('compositionend',()=>{changed();paint();});
+    block.addEventListener('compositionend',()=>{changed();paint();renderThreads();queueAnnotationLayout();});
     block.addEventListener('paste',event=>{
       if(!editing)return;
       event.preventDefault();document.execCommand('insertText',false,event.clipboardData.getData('text/plain').replace(/\r?\n/g,' '));
@@ -797,7 +1020,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       for(const option of clean.getElementById(id).options)option.toggleAttribute('selected',option.value===$('#'+id).value);
     }
     clean.querySelector('meta[name="rsi-file-revision"]').content=fileRevision;
-    clean.getElementById('rsi-review-data').textContent=escapeJSON({version:3,threads:state.threads});
+    clean.getElementById('rsi-review-data').textContent=escapeJSON({version:4,preferences:{viewMode,author:currentAuthor},threads:state.threads});
     return '<!DOCTYPE html>\n'+clean.documentElement.outerHTML;
   }
   function filename(){try{return decodeURIComponent(location.pathname.split('/').pop()) || '离线汇报.html';}catch{return '离线汇报模板.html';}}
@@ -876,7 +1099,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(!window.showOpenFilePicker||!window.isSecureContext)$('#review-save-help').textContent='当前浏览器不支持自动写回，请用 Chrome 或 Edge 打开文件。也可以手动导出副本。';
   function exportComments(){
     const lines=['# 文档批注清单','','正文文件：'+filename(),''];
-    for(const thread of state.threads){lines.push('## '+(thread.resolved?'[已完成] ':'[待处理] ')+(intentLabels[thread.intent]||intentLabels.discuss)+' · '+locationLabel(thread),'','批注编号：'+thread.id,'');for(const anchor of thread.anchors){lines.push('原文（'+anchor.blockId+'）：','> '+(anchor.originalQuote||anchor.quote).split('\n').join('\n> '),'');if(anchor.edited||anchor.orphaned)lines.push('注：原文已修改或删除，请核对当前正文。','');}thread.messages.forEach((message,i)=>lines.push((i?'回复 '+i:'批注')+'：'+message.text,''));}
+    for(const thread of state.threads){lines.push('## '+(thread.resolved?'[已完成] ':'[待处理] ')+(intentLabels[thread.intent]||intentLabels.discuss)+' · '+locationLabel(thread),'','批注编号：'+thread.id,'');for(const anchor of thread.anchors){lines.push('原文（'+anchor.blockId+'）：','> '+(anchor.originalQuote||anchor.quote).split('\n').join('\n> '),'');if(anchor.edited||anchor.orphaned)lines.push('注：原文已修改或删除，请核对当前正文。','');}thread.messages.forEach((message,i)=>lines.push((i?'回复 '+i:'批注')+'（'+(message.author||thread.author||'未署名')+'）：'+message.text,''));}
     if(!state.threads.length){notify('当前没有批注。');return;}download(lines.join('\n'),filename().replace(/\.html?$/i,'-批注.md'),'text/markdown;charset=utf-8');
   }
   $('#review-export').addEventListener('click',exportComments);
@@ -887,7 +1110,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     if(event.key==='Escape'&&!document.querySelector('dialog[open]')){floating.hidden=true;if(!panel.hidden)closePanel();$('#review-save-menu').open=false;}
   });
   document.addEventListener('click',event=>{if(!event.target.closest('#review-save-menu'))$('#review-save-menu').open=false;});
-  window.addEventListener('beforeunload',event=>{if(dirty||saveBusy||(pending&&draft.value.trim())||[...replyDrafts.values()].some(d=>d.text.trim())){event.preventDefault();event.returnValue='';}});
+  window.addEventListener('beforeunload',event=>{if(dirty||saveBusy||(pending&&draft.value.trim())||[...replyDrafts.values()].some(d=>d.text.trim())||[...editDrafts.values()].some(d=>d.text!==d.originalText)){event.preventDefault();event.returnValue='';}});
   // Template hook: figure, .table-wrap, img, video, or any container marked data-zoomable.
   // Set data-zoomable="false" to opt out; data-zoom-title overrides the dialog heading.
   const zoomDialog=element('dialog','report-zoom-dialog');zoomDialog.id='report-zoom-dialog';
@@ -940,7 +1163,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       if(!window.confirm('移除此组件？相关批注仍会保留。'))return;
       for(const leaf of item.querySelectorAll('[data-rsi-text]')){
         const id=leaf.dataset.reviewBlock;const index=blocks.indexOf(leaf);if(index!==-1)blocks.splice(index,1);
-        byId.delete(id);oldText.delete(id);
+        byId.delete(id);oldText.delete(id);for(const thread of state.threads)for(const anchor of thread.anchors)if(anchor.blockId===id){anchor.orphaned=true;anchor.reason='paragraph-removed';}
       }
       item.remove();changed();paint();renderThreads();$('#review-add').focus();
     },'rsi-component-remove');
@@ -1046,12 +1269,12 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
     const footer=clean.querySelector('.footer');if(footer)footer.remove();
     for(const block of clean.querySelectorAll('[data-review-block]'))block.removeAttribute('data-review-block');
-    clean.getElementById('rsi-review-data').textContent='{"version":3,"threads":[]}';
+    clean.getElementById('rsi-review-data').textContent='{"version":4,"preferences":{"viewMode":"anchored","author":"我"},"threads":[]}';
     download('<!DOCTYPE html>\n'+clean.documentElement.outerHTML,'离线汇报-空白模板.html','text/html;charset=utf-8');
     $('#review-save-menu').open=false;
   });
 
-  syncFileButton();renderThreads();paint();
+  syncReviewMode();syncFileButton();renderThreads();paint();queueAnnotationLayout();
 })();
 },{once:true});
 </script>
