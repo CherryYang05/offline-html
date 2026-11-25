@@ -1,17 +1,23 @@
-# 完整 HTML 的测试截图
+# 通用模板测试截图
 
-下方使用 GitHub 附件图片，避免文档内的仓库 raw 图片请求在部分环境中加载失败。原始 JPG 仍保存在本目录，克隆或下载仓库后可离线查看。
+截图来自内置空白模板填写后的完整页面，不使用研究文档。可复现文件：[通用模板示例](../../examples/template-demo.html)。测试范围与边界见[回归记录](../完整HTML回归.md)。
 
-## 关闭重开后的正文与批注
+## 桌面汇报与批注
 
-![完整页面重开后的正文与批注](https://github.com/user-attachments/assets/4ed8db0a-8231-4a0f-99c3-eaba6425993f)
+![通用模板的桌面汇报与批注](https://github.com/user-attachments/assets/58af8f3a-34b1-48ad-a8f0-d72a94388ec7)
 
-[仓库原图](reopened.jpg)
+[仓库图片](reopened.jpg)
 
-## 390 像素窄屏
+## 窄屏正文
 
-![完整页面的窄屏布局](https://github.com/user-attachments/assets/561c93c5-c1fb-45d3-8b1f-90efa36d9dde)
+![通用模板的窄屏正文](https://github.com/user-attachments/assets/d1de9612-1d72-4e95-b4ba-4ce001445c90)
 
-[仓库原图](narrow.jpg)
+[仓库图片](narrow.jpg)
 
-返回[完整 HTML 回归记录](../完整HTML回归.md)。
+## 窄屏批注编辑
+
+![通用模板的窄屏批注编辑](https://github.com/user-attachments/assets/72afed98-799f-480b-8ef5-030d56597636)
+
+[仓库图片](annotation-mobile.jpg)
+
+仓库 JPG 随克隆／下载保留；在线文档使用已验证可显示的 GitHub 附件地址。图片不是原文件写回或完整兼容性验收的替代证据。
