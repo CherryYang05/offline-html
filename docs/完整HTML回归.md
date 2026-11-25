@@ -32,11 +32,11 @@
 
 重开后进入汇报，正文及批注恢复：
 
-![完整页面重开后的正文与批注](evidence/reopened.jpg)
+![完整页面重开后的正文与批注](https://github.com/user-attachments/assets/4ed8db0a-8231-4a0f-99c3-eaba6425993f)
 
 390 像素下双栏顺序堆叠，顶栏可操作：
 
-![完整页面的窄屏布局](evidence/narrow.jpg)
+![完整页面的窄屏布局](https://github.com/user-attachments/assets/561c93c5-c1fb-45d3-8b1f-90efa36d9dde)
 
 ## 可复查的磁盘验收
 
