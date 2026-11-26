@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="description" content="单文件离线汇报模板"><title>离线汇报</title>
 <meta name="theme-color" content="#f4f7f6">
-<meta name="rsi-file-revision" content="2026-11-25-v12">
+<meta name="rsi-file-revision" content="2026-11-26-v13">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; media-src data:; base-uri 'none'; form-action 'none'; frame-src 'none'; connect-src 'none'"><style>
 /* 单文件汇报模板：颜色、排版、布局和层级均从这些变量调整。 */
 :root{--paper:#fff;--ground:#f2f5f7;--rail:#fff;--ink:#233139;--body:#3e4b52;--muted:#6c7880;--line:#e2e8eb;--accent:#2c695d;--tint:#eaf3ef;--sand:#faf6ed;--gold:#896d3c;--blue:#426d8b;--nav:264px;--top:68px;--edge:20px;--gap:24px;--reader-size:18px;--reader-leading:1.55;--radius-page:14px;--radius-control:8px;--shadow-page:0 12px 36px rgba(33,49,59,.055),0 2px 5px rgba(33,49,59,.025);--shadow-drawer:0 8px 28px rgba(33,49,59,.055),0 1px 3px rgba(33,49,59,.025);--foreground:#233139;--background:#fff;--border:#e2e8eb;--muted-foreground:#6c7880;--font-size-base:18px;--red:#b45449;--orange:#a97737;--green:#2c695d;--purple:#78648c;--viz-series-1:#4f8199;--viz-series-2:#3d7768;font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;color-scheme:light}
@@ -76,7 +76,7 @@ html{scroll-padding-top:var(--navigation-inset,calc(var(--top) + 18px))}
 .review-status{font-size:12px;color:var(--muted);white-space:nowrap}.review-status[data-dirty="true"]{color:#916d26}
 .review-panel{position:fixed;right:20px;top:calc(var(--top) + 20px);bottom:20px;width:350px;z-index:55;border:1px solid var(--line);border-radius:14px;background:#fafcfc;box-shadow:0 8px 28px #21313b10;display:flex;flex-direction:column;color:var(--ink);font-size:15px;line-height:1.6}
 .review-panel-head{padding:17px 18px 13px;background:#fff;border-radius:14px 14px 0 0;border-bottom:1px solid var(--line)}.review-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.review-panel-heading h2{font-size:18px;letter-spacing:0}.review-close{padding:2px 8px;font-size:20px;border:0;background:none;color:var(--muted)}.review-filters{display:flex;gap:6px;margin-top:10px}.review-filters button{font-size:13px;padding:4px 10px;background:transparent;border-color:transparent}.review-filters button[aria-pressed="true"]{background:var(--tint);color:var(--accent)}
-.review-list{padding:14px;overflow:auto;overscroll-behavior:contain;flex:1;min-height:0}.review-empty{margin:20px 8px;color:var(--muted);font-size:14px;line-height:1.9}.review-thread{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:12px;scroll-margin-top:12px}.review-thread.selected{border-color:#84ac9d;box-shadow:0 0 0 2px #edf4f0}.review-thread-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}.review-topic{font-size:12px;color:var(--muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.review-complete{font-size:12px;display:flex;gap:4px;align-items:center;white-space:nowrap;color:var(--muted)}.review-complete input{accent-color:var(--accent);width:14px;height:14px;margin:0}.review-quote{display:block;width:100%;border:0;border-left:3px solid #d6bb60;border-radius:0;text-align:left;background:#fff9e9;white-space:normal;padding:7px 9px;font-size:13px;line-height:1.65;color:#736036;max-height:100px;overflow:auto;word-break:break-word}.review-quote:hover{background:#fff4d5;border-color:#d6bb60}.review-message{margin-top:11px;overflow-wrap:anywhere}.review-message p{margin:0;font-size:15px;line-height:1.7;white-space:pre-wrap}.review-message time{display:block;font-size:11px;color:#879296;margin-top:3px}.review-message+.review-message{padding-top:10px;border-top:1px solid #f0f3f4}.review-thread.resolved .review-quote{border-color:#c5cdcc;background:#f2f4f4;color:#818d8a}.review-anchor-note{font-size:12px;color:#946d28;margin:7px 0 0}.review-thread-actions{display:flex;gap:12px;margin-top:10px}.review-thread-actions button{padding:0;border:0;border-radius:0;background:none;font-size:12px;color:var(--muted)}.review-thread-actions button:hover{color:var(--accent)}
+.review-list{padding:14px;overflow:auto;overscroll-behavior:contain;flex:1;min-height:0}.review-empty{margin:20px 8px;color:var(--muted);font-size:14px;line-height:1.9}.review-thread{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:12px;scroll-margin-top:12px}.review-thread.selected{border-color:#84ac9d;box-shadow:0 0 0 2px #edf4f0}.review-thread-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}.review-topic{font-size:12px;color:var(--muted);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.review-complete{font-size:12px;display:flex;gap:4px;align-items:center;white-space:nowrap;color:var(--muted)}.review-complete input{accent-color:var(--accent);width:14px;height:14px;margin:0}.review-quote{display:block;width:100%;border:0;border-left:3px solid #d6bb60;border-radius:0;text-align:left;background:#fff9e9;white-space:normal;padding:7px 9px;font-size:13px;line-height:1.65;color:#736036;max-height:100px;overflow:auto;word-break:break-word}.review-quote:hover{background:#fff4d5;border-color:#d6bb60}.review-message{margin-top:11px;overflow-wrap:anywhere}.review-message p{margin:0;font-size:15px;line-height:1.7;white-space:pre-wrap}.review-message time{display:block;font-size:11px;color:#879296;margin-top:3px}.review-message+.review-message{padding-top:10px;border-top:1px solid #f0f3f4}.review-anchor-note{font-size:12px;color:#946d28;margin:7px 0 0}.review-thread-actions{display:flex;gap:12px;margin-top:10px}.review-thread-actions button{padding:0;border:0;border-radius:0;background:none;font-size:12px;color:var(--muted)}.review-thread-actions button:hover{color:var(--accent)}
 .review-reply{margin-top:11px}.review-panel textarea{display:block;resize:vertical;width:100%;min-height:80px;padding:9px 10px;font:inherit;font-size:14px;line-height:1.6;background:#fff;border:1px solid #ccd9d5;border-radius:7px;color:var(--ink)}.review-panel textarea:focus{outline:2px solid #b8d2c7;outline-offset:1px}.review-form-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:9px}.review-form-actions button{font-size:13px;padding:5px 11px}.review-panel-foot{padding:10px 16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);background:#fff;border-radius:0 0 14px 14px}.review-panel-foot button{padding:0;border:0;color:var(--accent);font-size:12px;background:none}
 .review-composer{margin:14px 14px 0;padding:13px;background:#fff;border:1px solid #a9c6ba;border-radius:10px}.review-composer label{display:block;font-size:14px;font-weight:600;margin:9px 0 7px}.review-composer .review-quote{max-height:74px}.review-error{color:#a0483c;font-size:13px;margin:7px 0 0}
 .review-open .document{margin-right:376px}.review-selection{position:fixed;z-index:100;padding:7px 12px;box-shadow:0 4px 16px #23313922;border-color:#b9d1c6;background:#fff;color:var(--accent);font-size:13px}.review-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);max-width:min(90vw,620px);z-index:150;padding:10px 17px;background:#2f443d;color:#fff;border-radius:9px;box-shadow:0 5px 20px #20332a20;font-size:14px;line-height:1.6;text-align:center}
@@ -129,7 +129,6 @@ mark[data-review-mark]{color:inherit;background:#fff0b3;padding:0;border-radius:
 .review-thread-actions button:hover{text-decoration:underline;text-underline-offset:3px;color:#3c634a}
 .review-thread-actions button+button{color:#929d95}.review-thread-actions button+button:hover{color:#9b6256}
 .review-thread.resolved{background:#fbfcfb;border-color:#e3e9e5;box-shadow:none}
-.review-thread.resolved .review-quote{background:#f1f4f2;border-color:#c7d1ca;color:#89978d}
 .review-thread.resolved .review-complete{color:#718c79}
 .review-anchor-note{font-size:13px;line-height:1.6;margin-top:9px}
 .review-reply{margin-top:12px}.review-panel textarea{padding:10px;font-size:15px;line-height:1.6;border-color:#d6e1d9;border-radius:4px;background:#fcfefd}
@@ -258,8 +257,6 @@ body.presenting:not(.nav-open) { overflow: visible; }
 .review-panel .review-filters button[aria-pressed="true"] { background: #edf3ef; color: var(--accent); font-weight: 600; }
 .review-panel .review-filters button:hover { background: #f1f5f3; }
 .review-panel .review-panel-foot { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; margin: 0; padding: 8px 0 0; border: 0; border-radius: 0; background: none; font-size: 11px; line-height: 1.6; }
-.review-panel #review-export { padding: 2px 0; border: 0; border-radius: 0; background: none; color: var(--link); font-size: 12px; text-decoration: underline; text-underline-offset: 3px; }
-.review-panel #review-export:hover { color: var(--link-hover); }
 .review-panel .review-list { position: static; inset: auto; margin: 0; padding: 0 16px; overflow: visible; min-height: 0; pointer-events: auto; }
 .review-panel .review-empty { position: static; top: auto; margin: 0; padding: 18px 0; color: var(--muted); font-size: 13px; line-height: 1.8; white-space: pre-line; }
 .review-panel .review-thread, .review-panel .review-thread.selected, .review-panel .review-thread.resolved {
@@ -343,6 +340,11 @@ body.presenting:not(.nav-open) { overflow: visible; }
   font-size: 14px;
   line-height: 1.6;
   white-space: pre-wrap;
+}
+.review-panel .review-thread.resolved .review-message-main > p {
+  color: #53645c;
+  text-decoration: line-through #7c8c83;
+  text-decoration-thickness: 1px;
 }
 .review-panel .review-thread:not(.selected) .review-message-main > p {
   display: -webkit-box;
@@ -547,16 +549,79 @@ mark[data-review-mark].is-completed { background: #eef0ef; }
 .type-menu .type-controls label { justify-content: space-between; }
 .review-panel .review-panel-foot { justify-content: flex-start; align-items: center; }
 .review-export-menu, .review-thread-more { position: relative; margin-left: auto; }
-.review-export-menu > div, .review-thread-menu {
-  position: absolute; right: 0; top: calc(100% + 4px); display: grid; gap: 3px;
-  min-width: 156px; padding: 5px; background: var(--paper); border: 1px solid var(--line);
-  border-radius: var(--radius-page); box-shadow: 0 4px 18px #26394320; z-index: 3;
+.review-export-options, .review-thread-menu, .topbar .review-save-options {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: 0 5px 18px #26394318;
 }
-.review-panel .review-export-menu button, .review-panel .review-thread-menu button {
-  width: 100%; min-height: 32px; text-align: left; padding: 4px 7px; border: 0;
-  background: transparent; color: var(--ink); font-size: 12px; text-decoration: none;
+.review-export-options, .review-thread-menu {
+  position: absolute;
+  inset-inline-end: 0;
+  top: calc(100% + 5px);
+  z-index: 3;
+  display: grid;
+  padding: 4px;
 }
-.review-panel .review-export-menu button:hover, .review-panel .review-thread-menu button:hover { background: #edf3ef; }
+.review-thread-menu { min-width: 156px; gap: 3px; }
+.review-export-options { inline-size: 186px; }
+.review-panel .review-export-options button, .review-panel .review-thread-menu button,
+.topbar .review-save-options button {
+  width: 100%;
+  min-height: 32px;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 12px;
+  text-align: start;
+  text-decoration: none;
+}
+.review-panel .review-export-options button:hover, .review-panel .review-thread-menu button:hover,
+.topbar .review-save-options button:hover { background: #edf3ef; }
+.review-panel .review-export-options button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.review-export-format {
+  color: #5c6e65;
+  font: 11px/1.4 ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+.review-panel .review-export-menu > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--review-filter-height);
+  padding: 3px 7px;
+  font-size: 12px;
+}
+.review-export-icon {
+  position: relative;
+  width: 11px;
+  height: 12px;
+  border-bottom: 1px solid currentColor;
+}
+.review-export-icon::before, .review-export-icon::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+}
+.review-export-icon::before {
+  top: 0;
+  height: 7px;
+  border-left: 1px solid currentColor;
+}
+.review-export-icon::after {
+  top: 3px;
+  width: 4px;
+  height: 4px;
+  border: solid currentColor;
+  border-width: 0 1px 1px 0;
+  transform: translateX(-40%) rotate(45deg);
+}
 .review-thread-more > summary {
   display: grid;
   place-items: center;
@@ -603,6 +668,24 @@ mark[data-review-mark].is-completed { background: #eef0ef; }
 @media (forced-colors: active) {
   .report-select > select, .report-select > select.review-control { appearance: auto; }
   .report-select::after { display: none; }
+}
+.review-panel { --review-filter-height: 27px; }
+.review-status-filter { display: flex; align-items: center; gap: 6px; }
+.review-panel .review-status-filter select {
+  min-height: var(--review-filter-height);
+  padding-block: 2px;
+  padding-inline: 7px 19px;
+  border-color: var(--line);
+  background-color: #f7f9f8;
+}
+.review-status-filter .report-select::after {
+  inset-inline-end: 7px;
+  width: 5px;
+  height: 5px;
+  border-width: 0 1px 1px 0;
+}
+@media (pointer: coarse) {
+  .review-panel { --review-filter-height: 34px; }
 }
 .review-overlap-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 12px; color: var(--muted); }
 .review-overlap-clear { padding: 4px 8px; font-size: 12px; }
@@ -659,15 +742,17 @@ mark[data-review-mark].is-completed { background: #eef0ef; }
 .topbar #review-edit { inline-size: calc(4em + 2 * var(--toolbar-control-padding) + 2px); }
 .topbar #review-add:disabled { visibility: hidden; }
 .topbar #review-connect { border-radius: var(--radius-control) 0 0 var(--radius-control); }
-.topbar .review-file-control summary {
-  width: 29px; padding: 0; border-radius: 0 var(--radius-control) var(--radius-control) 0;
+.topbar .review-file-control .review-save-menu > summary {
+  width: 25px; padding: 0; border-inline-start: 0;
+  border-radius: 0 var(--radius-control) var(--radius-control) 0;
+  color: #4c695e;
 }
-.topbar .review-file-control summary > span {
-  width: 7px; height: 7px; border: solid currentColor; border-width: 0 1.5px 1.5px 0;
-  transform: translateY(-2px) rotate(45deg);
+.topbar .review-file-control :where(#review-connect[data-connected="true"]) + .review-save-menu > summary {
+  background: #edf5ef; border-color: #bdd1c4;
 }
-.topbar .review-file-control summary:hover,
-.topbar .review-file-control details[open] > summary { background: var(--tint); }
+.topbar .review-file-control .review-save-menu > summary > span { font-size: 17px; line-height: 1; }
+.topbar .review-file-control .review-save-menu > summary:hover,
+.topbar .review-file-control .review-save-menu[open] > summary { background: #e2eee7; color: #284f43; }
 @media screen {
   .document > .reading { padding-top: 22px; }
   .presenting .document > .reading { padding-top: 0; }
@@ -693,9 +778,7 @@ mark[data-review-mark].is-completed { background: #eef0ef; }
 @media (max-width: 430px) {
   .topbar { --toolbar-control-padding: 5px; }
   .topbar .toolbar, .topbar .review-tools { gap: 4px; }
-  .topbar .review-file-control summary { width: 25px; }
 }
-body:not(.review-anchored) .review-panel .review-list { padding-block-start: 5px; }
 
 /* Anchored cards share the page scroll, with a sticky control header. */
 .review-open.review-anchored .review-panel {
@@ -731,13 +814,16 @@ body:not(.review-anchored) .review-panel .review-list { padding-block-start: 5px
   background: var(--paper);
   pointer-events: auto;
 }
-.review-panel .review-thread:focus-within,
-.review-panel .review-list:not(:has(.review-thread:focus-within)) .review-thread.selected {
-  border-radius: var(--radius-page);
-  outline: 1px solid #719d89;
-  outline-offset: var(--review-focus-offset, 3px);
+body:not(.review-anchored) .review-panel .review-thread:focus { outline: none; }
+body:not(.review-anchored) .review-panel .review-thread:focus-visible .review-intent-label {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
-.review-anchored .review-panel .review-thread { --review-focus-offset: -1px; }
+.review-anchored .review-panel .review-thread:focus-within,
+.review-anchored .review-panel .review-list:not(:has(.review-thread:focus-within)) .review-thread.selected {
+  outline: 1px solid #719d89;
+  outline-offset: -1px;
+}
 .review-anchored .review-panel .review-thread:focus-within { z-index: 2; }
 .review-anchored .review-panel .review-composer { z-index: 3; }
 </style>
@@ -835,7 +921,7 @@ present.addEventListener('click',()=>{
   document.dispatchEvent(new Event('report-mode-change'));
 });
 document.getElementById('previous').addEventListener('click',()=>showTopic(current-1));document.getElementById('next').addEventListener('click',()=>showTopic(current+1));
-document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.body.classList.contains('nav-open')){event.preventDefault();closeMenu();menu.focus();return;}if(!presentation||event.defaultPrevented||event.altKey||event.ctrlKey||event.metaKey||event.shiftKey||event.isComposing||document.querySelector('dialog[open]')||event.target.closest('input,select,textarea,summary,[contenteditable],.nav-pills,[role=tablist],.review-panel'))return;if(event.key==='ArrowRight'){event.preventDefault();showTopic(current+1);}if(event.key==='ArrowLeft'){event.preventDefault();showTopic(current-1);}if(event.key==='Escape'&&document.querySelector('#review-panel')?.hidden!==false)present.click();});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.body.classList.contains('nav-open')){event.preventDefault();closeMenu();menu.focus();return;}if(!presentation||event.defaultPrevented||event.altKey||event.ctrlKey||event.metaKey||event.shiftKey||event.isComposing||document.querySelector('dialog[open]')||event.target.closest('input,select,textarea,summary,[contenteditable],.nav-pills,[role=tablist],.review-panel,.review-file-control'))return;if(event.key==='ArrowRight'){event.preventDefault();showTopic(current+1);}if(event.key==='ArrowLeft'){event.preventDefault();showTopic(current-1);}if(event.key==='Escape'&&document.querySelector('#review-panel')?.hidden!==false)present.click();});
 function track(){
   scrollScheduled=false;if(presentation||document.querySelector('dialog[open]'))return;
   if(navigationPin){const pinned=document.getElementById(navigationPin.id),r=pinned?.getBoundingClientRect();if(r&&r.bottom>navigationInset()&&r.top<innerHeight*.75){navigationPin.top=scrollY;mark(navigationPin.id);counter();return;}}
@@ -1020,7 +1106,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   // END ANNOTATION LOGIC
 
   const tools = element('div', 'review-tools');
-  tools.innerHTML = '<button id="review-toggle" type="button" aria-expanded="false" aria-controls="review-panel">批注 <span id="review-count">0</span></button><button id="review-edit" type="button" aria-pressed="false">编辑正文</button><button id="review-add" type="button" disabled>插入</button><div class="review-file-control"><button id="review-connect" class="review-connect" type="button" data-connected="false">连接原文件</button><details class="review-save-menu" id="review-save-menu"><summary aria-label="文件选项"><span aria-hidden="true"></span></summary><div class="review-save-options"><button id="review-save" type="button">连接原文件并自动保存</button><button id="review-disconnect" type="button" hidden>断开原文件</button><button id="review-download" type="button">导出 HTML 副本</button><button id="review-blank" type="button">创建空白模板</button><p id="review-save-help">选择当前这份 HTML 后，修改会自动写回原文件。每次重新打开页面需连接一次。</p><span class="review-status" id="review-status" role="status">尚未连接原文件</span></div></details></div>';
+  tools.innerHTML = '<button id="review-toggle" type="button" aria-expanded="false" aria-controls="review-panel">批注 <span id="review-count">0</span></button><button id="review-edit" type="button" aria-pressed="false">编辑正文</button><button id="review-add" type="button" disabled>插入</button><div class="review-file-control"><button id="review-connect" class="review-connect" type="button" data-connected="false">连接原文件</button><details class="review-save-menu" id="review-save-menu"><summary aria-label="文件选项" title="文件选项"><span aria-hidden="true">⋯</span></summary><div class="review-save-options"><button id="review-save" type="button">连接原文件并自动保存</button><button id="review-disconnect" type="button" hidden>断开原文件</button><button id="review-download" type="button">导出 HTML 副本</button><button id="review-blank" type="button">创建空白模板</button><p id="review-save-help">选择当前这份 HTML 后，修改会自动写回原文件。每次重新打开页面需连接一次。</p><span class="review-status" id="review-status" role="status">尚未连接原文件</span></div></details></div>';
   $('.toolbar').insertBefore(tools, $('#present'));
   const status = $('#review-status');
   const panel = element('aside', 'review-panel'); panel.id = 'review-panel'; panel.hidden = true;
@@ -1042,15 +1128,21 @@ document.addEventListener('DOMContentLoaded',()=>{
         <button type="button" id="review-document" aria-pressed="true">全文</button>
       </div>
       <div class="review-panel-foot">
-        <label for="review-filter">状态</label>
-        <span class="report-select"><select id="review-filter" class="review-control">
-          <option value="all">全部状态</option><option value="pending">待处理</option>
-          <option value="resolved">已解决</option><option value="lost">失联</option>
-        </select></span>
+        <div class="review-status-filter">
+          <label for="review-filter">状态</label>
+          <span class="report-select">
+            <select id="review-filter" class="review-control">
+              <option value="all">全部</option><option value="pending">待处理</option>
+              <option value="resolved">已解决</option><option value="lost">失联</option>
+            </select>
+          </span>
+        </div>
         <details class="review-export-menu">
-          <summary>导出</summary>
-          <div><button type="button" id="review-export">批注清单（Markdown）</button>
-            <button type="button" id="review-ai-export">AI 修订指令（JSON）</button></div>
+          <summary><span class="review-export-icon" aria-hidden="true"></span>导出</summary>
+          <div class="review-export-options">
+            <button type="button" id="review-export">批注清单<span class="review-export-format">.md</span></button>
+            <button type="button" id="review-ai-export">AI 修订指令<span class="review-export-format">.json</span></button>
+          </div>
         </details>
       </div>
       <p id="review-file-status" class="sr-only">尚未连接原文件</p>
@@ -1081,6 +1173,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.body.append(reviewScrim, panel, floating, hint, toast, rebindBar, marginMarkers);
 
   const list = $('#review-list'), composer = $('#review-composer'), draft = $('#review-draft');
+  const exportMenu = $('.review-export-menu', panel), fileMenu = $('#review-save-menu');
   function notify(message) { clearTimeout(toastTimer); toast.textContent = message; toast.hidden = false; toastTimer = setTimeout(() => { toast.hidden = true; }, 4500); }
   function changed() {
     dirty = true;
@@ -1097,6 +1190,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     queueFit(); queueAnnotationLayout(); paint();
   }
   function closePanel() {
+    exportMenu.open = false;
     if (panel.contains(document.activeElement)) $('#review-toggle').focus({preventScroll:true});
     document.body.classList.remove('review-open'); panel.inert = true; panel.setAttribute('aria-hidden', 'true'); reviewScrim.hidden = true;
     clearTimeout(panelCloseTimer);
@@ -1267,13 +1361,11 @@ document.addEventListener('DOMContentLoaded',()=>{
     return !panel.inert && (hoveredIds.size ? hoveredIds.has(id) : id === activeId);
   }
 
-  function activateThread(id, reveal = false) {
-    if (activeId !== id) {
-      activeId = id;
-      renderThreads();
-      paint();
-    }
-    if (reveal) revealCardId = id;
+  function activateThread(id) {
+    if (activeId === id) return;
+    activeId = id;
+    renderThreads();
+    paint();
     queueAnnotationLayout();
   }
   function beginRebind(thread) {
@@ -1591,7 +1683,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     for (const thread of visible) {
       const first = thread.messages[0];
       const selected = thread.id === activeId;
-      const collapsed = thread.resolved && !selected;
       const card = element('article', 'review-thread' + (thread.resolved ? ' resolved' : '') + (selected ? ' selected' : '') + (hoveredIds.has(thread.id) ? ' is-hovered' : ''));
       card.id = 'review-thread-' + thread.id;
       card.dataset.threadId = thread.id;
@@ -1685,8 +1776,8 @@ document.addEventListener('DOMContentLoaded',()=>{
         card.append(warning);
       }
 
-      if (!collapsed && first) card.append(renderMessage(first, thread, true));
-      if (!collapsed && thread.messages.length > 1) {
+      if (first) card.append(renderMessage(first, thread, true));
+      if (thread.messages.length > 1) {
         const discussion = element('details', 'review-discussion');
         discussion.open = selected;
         discussion.append(element('summary', '', (thread.messages.length - 1) + ' 条回复'));
@@ -1699,30 +1790,21 @@ document.addEventListener('DOMContentLoaded',()=>{
       if (time) context.append(time);
       if (first) context.append(button('编辑', () => startEditingMessage(first, thread), 'review-edit-action'));
       actions.append(context);
-      if (collapsed) {
-        const expand = button('展开', () => {
-          activateThread(thread.id, true);
-          focusThreadInput(thread.id, '.review-collapse');
-        }, 'review-open-resolved');
-        expand.setAttribute('aria-label', '展开已解决批注');
-        actions.append(expand);
-      } else {
-        actions.append(button('回复', () => {
-          activeId = thread.id;
-          const reply = replyDrafts.get(thread.id) || {text:'', open:false};
-          reply.open = true;
-          replyDrafts.set(thread.id, reply);
-          renderThreads();
-          focusThreadInput(thread.id, '.review-reply textarea');
-        }, 'review-reply-action'));
-        if (selected) actions.append(button('收起', () => {
-          activeId = null;
-          hoveredIds.clear();
-          renderThreads();
-          paint();
-          document.getElementById(card.id)?.focus({preventScroll:true});
-        }, 'review-collapse'));
-      }
+      actions.append(button('回复', () => {
+        activeId = thread.id;
+        const reply = replyDrafts.get(thread.id) || {text:'', open:false};
+        reply.open = true;
+        replyDrafts.set(thread.id, reply);
+        renderThreads();
+        focusThreadInput(thread.id, '.review-reply textarea');
+      }, 'review-reply-action'));
+      if (selected) actions.append(button('收起', () => {
+        activeId = null;
+        hoveredIds.clear();
+        renderThreads();
+        paint();
+        document.getElementById(card.id)?.focus({preventScroll:true});
+      }, 'review-collapse'));
       actions.append(button('删除', () => {
         if (!window.confirm('删除这条批注及其全部回复？')) return;
         if (rebindThreadId === thread.id) cancelRebind();
@@ -1737,7 +1819,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         $('#review-filter').focus({preventScroll:true});
       }, 'review-delete'));
       const reply = replyDrafts.get(thread.id);
-      if (reply?.open && !collapsed) {
+      if (reply?.open) {
         const form = element('form','review-reply');
         const input = element('textarea');
         input.placeholder = '回复这条批注…';
@@ -1786,13 +1868,26 @@ document.addEventListener('DOMContentLoaded',()=>{
     for (const menu of panel.querySelectorAll('.review-thread-more[open]')) {
       if (!menu.contains(event.target)) menu.open = false;
     }
+    if (!exportMenu.contains(event.target)) exportMenu.open = false;
+    if (!event.target.closest('.review-file-control')) fileMenu.open = false;
   });
   $('#review-cancel').addEventListener('click',()=>{composer.hidden=true;pending=null;draft.value='';window.getSelection()?.removeAllRanges();queueAnnotationLayout();});
   $('#review-toggle').addEventListener('click',()=>{if(!document.body.classList.contains('review-open')){openPanel();renderThreads();}else closePanel();});
   $('#review-close').addEventListener('click',()=>{closePanel();$('#review-toggle').focus();});
   document.addEventListener('keydown', event => {
-    if (event.key !== 'Escape' || event.defaultPrevented || !document.body.classList.contains('review-open') || document.querySelector('dialog[open]')) return;
-    event.preventDefault(); closePanel(); $('#review-toggle').focus();
+    if (event.key !== 'Escape' || event.defaultPrevented || document.querySelector('dialog[open]')) return;
+    const openMenu = [exportMenu, fileMenu].find(menu => menu.open);
+    if (openMenu) {
+      event.preventDefault();
+      openMenu.open = false;
+      openMenu.querySelector('summary').focus({preventScroll:true});
+      return;
+    }
+    floating.hidden = true;
+    if (panel.inert) return;
+    event.preventDefault();
+    closePanel();
+    $('#review-toggle').focus({preventScroll:true});
   });
   $('#menu').addEventListener('click', () => { if (document.body.classList.contains('nav-open') && document.body.classList.contains('review-open')) closePanel(); });
   for (const value of ['chapter', 'document']) {
@@ -2220,18 +2315,20 @@ document.addEventListener('DOMContentLoaded',()=>{
       ...groups
     };
     download(JSON.stringify(instructions, null, 2) + '\n', filename().replace(/\.html?$/i, '-AI修订指令.json'), 'application/json;charset=utf-8');
-    $('.review-export-menu').open = false;
     notify('已导出待处理批注的修订指令。');
   }
-  $('#review-ai-export').addEventListener('click', exportRevisionInstructions);
-  $('#review-export').addEventListener('click', () => { exportComments(); $('.review-export-menu').open = false; });
+  for (const [id, runExport] of [['review-export', exportComments], ['review-ai-export', exportRevisionInstructions]]) {
+    $('#' + id).addEventListener('click', () => {
+      runExport();
+      exportMenu.open = false;
+      exportMenu.querySelector('summary').focus({preventScroll:true});
+    });
+  }
   for(const id of ['font-size-select','line-height-select'])$('#'+id).addEventListener('change',changed);
   document.addEventListener('keydown',event=>{
     if((event.ctrlKey||event.metaKey)&&event.altKey&&(event.code==='KeyM'||event.key.toLowerCase()==='m')){event.preventDefault();startComment();}
     if((event.ctrlKey||event.metaKey)&&event.key.toLowerCase()==='s'){event.preventDefault();saveHTML();}
-    if(event.key==='Escape'&&!document.querySelector('dialog[open]')){floating.hidden=true;if(!panel.hidden)closePanel();$('#review-save-menu').open=false;}
   });
-  document.addEventListener('click',event=>{if(!event.target.closest('.review-file-control'))$('#review-save-menu').open=false;});
   window.addEventListener('beforeunload',event=>{if(dirty||saveBusy||activeComposition||(pending&&draft.value.trim())||[...replyDrafts.values()].some(d=>d.text.trim())||[...editDrafts.values()].some(d=>d.text!==d.originalText)){event.preventDefault();event.returnValue='';}});
   // Template hook: figure, .table-wrap, img, video, or any container marked data-zoomable.
   // Set data-zoomable="false" to opt out; data-zoom-title overrides the dialog heading.
