@@ -2926,7 +2926,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.body.classList.add('review-open'); $('#review-toggle').setAttribute('aria-expanded', 'true');
     if (innerWidth > 1100 && innerWidth < 1400 && !document.body.classList.contains('nav-collapsed')) { $('#menu').click(); restoreDrawer = true; }
     if (document.body.classList.contains('nav-open')) $('#menu').click();
-    queueFit(); queueAnnotationLayout(); paint();
+    queueFit(); queueAnnotationLayout(); queueMessageExpansion(); paint();
   }
   function closePanel() {
     exportMenu.open = false;
@@ -3356,8 +3356,10 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
     row.append(element('p', '', message.text));
     if (first) {
-      if ((message.text.length > 112 || message.text.split('\n').length > 3) && activeId !== thread.id) {
-        row.append(button('展开全文', () => activateThread(thread.id), 'review-expand'));
+      if (activeId !== thread.id) {
+        const expand = button('展开全文', () => activateThread(thread.id), 'review-expand');
+        expand.hidden = true;
+        row.append(expand);
       }
     } else {
       const meta = element('div', 'review-message-meta');
@@ -3368,6 +3370,18 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
     return row;
   }
+  let messageExpansionFrame = 0;
+  function queueMessageExpansion() {
+    cancelAnimationFrame(messageExpansionFrame);
+    messageExpansionFrame = requestAnimationFrame(() => {
+      for (const row of list.querySelectorAll('.review-message-main')) {
+        const paragraph = row.querySelector(':scope > p');
+        const expand = row.querySelector(':scope > .review-expand');
+        if (paragraph && expand) expand.hidden = paragraph.scrollHeight <= paragraph.clientHeight + 1;
+      }
+    });
+  }
+  new ResizeObserver(queueMessageExpansion).observe(panel);
   function filterThreads(threads) {
     if (filter === 'pending') return threads.filter(thread => !thread.resolved);
     if (filter === 'resolved') return threads.filter(thread => thread.resolved);
@@ -3586,7 +3600,10 @@ document.addEventListener('DOMContentLoaded',()=>{
       card.append(actions);
       card.addEventListener('click', event => {
         if (event.target.closest('button, a, summary, input, textarea, select, label') || window.getSelection()?.toString()) return;
-        card.focus({preventScroll:true});
+        if (event.target.closest('.review-message-main > p')) {
+          activateThread(thread.id);
+          document.getElementById(card.id)?.focus({preventScroll:true});
+        } else card.focus({preventScroll:true});
       });
       card.addEventListener('pointerenter', () => setHover([thread.id]));
       card.addEventListener('pointerleave', () => setHover([]));
@@ -3594,6 +3611,7 @@ document.addEventListener('DOMContentLoaded',()=>{
       card.addEventListener('focusout', event => { if (!card.contains(event.relatedTarget)) setHover([]); });
       list.append(card);
     }
+    queueMessageExpansion();
   }
 
   composer.addEventListener('submit',event=>{
