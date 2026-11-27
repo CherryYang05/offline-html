@@ -637,7 +637,7 @@ button.primary:hover:not(:disabled) {
   transition: transform var(--drawer-duration) ease, opacity var(--drawer-duration) ease, visibility 0s var(--drawer-duration);
 }
 .rail-heading {
-  padding: 14px 18px 12px;
+  padding: 14px 16px 12px;
   border-bottom: 1px solid var(--line-subtle);
   display: flex;
   align-items: baseline;
@@ -660,15 +660,15 @@ button.primary:hover:not(:disabled) {
   overscroll-behavior: contain;
   scrollbar-width: thin;
   scrollbar-color: #cbd7d5 transparent;
-  padding: 14px 12px;
+  padding: 12px;
 }
 .sidebar nav ol { list-style: none; margin: 0; padding: 0; }
-.sidebar nav > ol > li { margin: 0 0 2px; }
+.sidebar nav > ol > li { margin: 0 0 8px; }
 .sidebar nav a {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  padding: 8px 10px;
+  padding: 7px 10px;
   border-radius: var(--radius-sm);
   color: var(--secondary);
   font-size: 14px;
@@ -680,7 +680,7 @@ button.primary:hover:not(:disabled) {
   color: var(--ink);
 }
 .sidebar nav a.active {
-  background: transparent;
+  background: var(--surface-tint);
   color: var(--accent);
   font-weight: 600;
 }
@@ -726,13 +726,12 @@ button.primary:hover:not(:disabled) {
   transform: translateY(-65%) rotate(45deg);
 }
 .sidebar nav .toc-group > ol {
-  margin: 0 0 5px 31px;
+  margin: 2px 0 10px 24px;
 }
-.sidebar nav ol ol li { margin: 0; }
-.sidebar nav .toc-group > ol:has(> li:only-child) .toc-number { display: none; }
+.sidebar nav ol ol li { margin: 2px 0; }
 .sidebar nav ol ol a {
-  font-size: 13px;
-  padding: 3px 9px 7px;
+  font-size: 13.5px;
+  padding: 6px 9px;
   font-weight: 450;
 }
 .rail-bottom {
@@ -2564,7 +2563,7 @@ mark[data-review-mark].is-completed { background: #eef1f0; }
   .review-editing [data-review-block] { outline: 0 !important; box-shadow: none !important; background: none !important; }
 }
 </style>
-</head><body><a class="skip" href="#document">跳至正文</a><aside class="sidebar" id="report-sidebar" aria-label="报告目录"><div class="rail-heading"><strong>目录</strong><span>6 章</span></div><nav aria-label="多级标题目录"><ol><li><a href="#background">背景与问题</a><ol><li><a href="#background-main">核心场景与定位</a></li></ol></li><li><a href="#overview">概览</a><ol><li><a href="#overview-main">单文件阅读与汇报</a></li></ol></li><li><a href="#design">方案设计</a><ol><li><a href="#design-main">结构化内容组件</a></li></ol></li><li><a href="#validation">验证与证据</a><ol><li><a href="#validation-main">数据与证据呈现</a></li></ol></li><li><a href="#discussion">讨论</a><ol><li><a href="#discussion-main">选区批注与修订</a></li></ol></li><li><a href="#summary">总结</a><ol><li><a href="#summary-main">原文件保存与交付</a></li></ol></li></ol></nav><div class="rail-bottom"><span id="rail-progress" title="当前章节进度">01 / 06</span></div></aside><div class="scrim" id="scrim"></div><header class="topbar">
+</head><body><a class="skip" href="#document">跳至正文</a><aside class="sidebar" id="report-sidebar" aria-label="报告目录"><div class="rail-heading"><strong>目录</strong><span>汇报目录</span></div><nav aria-label="多级标题目录"><ol><li><a href="#background">背景与问题</a><ol><li><a href="#background-main">核心场景与定位</a></li></ol></li><li><a href="#overview">概览</a><ol><li><a href="#overview-main">单文件阅读与汇报</a></li></ol></li><li><a href="#design">方案设计</a><ol><li><a href="#design-main">结构化内容组件</a></li></ol></li><li><a href="#validation">验证与证据</a><ol><li><a href="#validation-main">数据与证据呈现</a></li></ol></li><li><a href="#discussion">讨论</a><ol><li><a href="#discussion-main">选区批注与修订</a></li></ol></li><li><a href="#summary">总结</a><ol><li><a href="#summary-main">原文件保存与交付</a></li></ol></li></ol></nav><div class="rail-bottom"><span id="rail-progress" title="当前章节进度">01 / 06</span></div></aside><div class="scrim" id="scrim"></div><header class="topbar">
  <div class="nav-lead"><button class="menu" id="menu" aria-label="收起目录" aria-controls="report-sidebar" aria-expanded="true">目录</button><a class="site-brand" href="#background"><strong>离线汇报</strong></a><span class="topbar-title" id="breadcrumb">1.1 核心场景与定位</span></div>
  <div class="toolbar"><details class="type-menu"><summary>排版</summary><div class="type-controls" aria-label="阅读排版设置"><label for="font-size-select">字号<span class="report-select"><select id="font-size-select" aria-label="正文字号"><option value="15">15 · 紧凑</option><option value="16" selected="">16 · 标准</option><option value="17">17 · 适中</option><option value="18">18 · 舒展</option></select></span></label><label for="line-height-select">行距<span class="report-select"><select id="line-height-select" aria-label="正文行距"><option value="1.35">1.35 · 紧凑</option><option value="1.45">1.45 · 适中</option><option value="1.55">1.55 · 舒展</option><option value="1.65" selected="">1.65 · 宽松</option></select></span></label></div></details><div class="paging"><button id="previous" aria-label="上一页">上一页</button><span class="progress" id="page-progress">01 / 06</span><button id="next" aria-label="下一页">下一页</button></div><button class="primary" id="present" aria-pressed="false" type="button">汇报模式</button></div>
 </header><main class="document" id="document" tabindex="-1"><article class="reading"><section class="sheet" id="background" data-title="背景与问题"><div class="section-heading"><h1 class="section-title"><span class="section-number">1</span> <span class="heading-text" data-review-block="b0001">背景与问题</span></h1></div><div class="topic" id="background-main" data-anchor="background-main" data-title="核心场景与定位"><div class="heading"><h3 class="topic-title"><span class="chapter-no">1.1</span> <span class="heading-text" data-review-block="b0002">核心场景与定位</span></h3></div><p data-review-block="b0003">把一份文档，变成可讲、可改、可讨论的汇报。</p><div data-rsi-added="columns"><div class="rsi-columns"><div class="rsi-column"><h4 data-rsi-text="" data-review-block="item-dc79b9ff-a671-48f1-b504-9aa53879147b">内容原位编辑</h4><p data-rsi-text="" data-review-block="item-65b2973c-17b0-4e76-b0ec-65b579cc7b9c">标题、段落和表格文字可以直接修改，不用重复排版。</p></div><div class="rsi-column"><h4 data-rsi-text="" data-review-block="item-90badfa1-bfee-4bd4-bc02-1f61a3f1ea26">讨论就在正文旁</h4><p data-rsi-text="" data-review-block="item-4af4deba-fea3-4d8a-98cc-e8253f7246cc">选中句子，记录修改建议、保留理由或后续问题。</p></div></div></div><div data-rsi-added="details"><details class="rsi-disclosure" open=""><summary><span data-rsi-text="" data-review-block="item-b04986c9-46e1-4c3f-a449-e688eb611e8e">使用提示</span></summary><p data-rsi-text="" data-review-block="item-fd714a34-760d-41eb-8de6-61fe6d8ebf5d">点击“编辑正文”修改文字，用“插入”添加双栏、图片或 GIF；连接当前文件后自动保存。</p></details></div></div></section><section class="sheet" id="overview" data-title="概览"><div class="section-heading"><h2 class="section-title"><span class="section-number">2</span> <span class="heading-text" data-review-block="b0004">概览</span></h2></div><div class="topic" id="overview-main" data-anchor="overview-main" data-title="单文件阅读与汇报"><div class="heading"><h3 class="topic-title"><span class="chapter-no">2.1</span> <span class="heading-text" data-review-block="b0005">单文件阅读与汇报</span></h3></div><p data-review-block="b0006">一份 HTML 包含正文、媒体、交互和批注。阅读时连续浏览，汇报时按章节讲解。</p></div></section><section class="sheet" id="design" data-title="方案设计"><div class="section-heading"><h2 class="section-title"><span class="section-number">3</span> <span class="heading-text" data-review-block="b0007">方案设计</span></h2></div><div class="topic" id="design-main" data-anchor="design-main" data-title="结构化内容组件"><div class="heading"><h3 class="topic-title"><span class="chapter-no">3.1</span> <span class="heading-text" data-review-block="b0008">结构化内容组件</span></h3></div><p data-review-block="b0009">按内容选择合适的组件：双栏对照、折叠补充、静态图片或 GIF。</p></div></section><section class="sheet" id="validation" data-title="验证与证据"><div class="section-heading"><h2 class="section-title"><span class="section-number">4</span> <span class="heading-text" data-review-block="b0010">验证与证据</span></h2></div><div class="topic" id="validation-main" data-anchor="validation-main" data-title="数据与证据呈现"><div class="heading"><h3 class="topic-title"><span class="chapter-no">4.1</span> <span class="heading-text" data-review-block="b0011">数据与证据呈现</span></h3></div><p data-review-block="b0012">演示数据用于说明模板能力，不代表任何实际项目结果。</p></div></section><section class="sheet" id="discussion" data-title="讨论"><div class="section-heading"><h2 class="section-title"><span class="section-number">5</span> <span class="heading-text" data-review-block="b0013">讨论</span></h2></div><div class="topic" id="discussion-main" data-anchor="discussion-main" data-title="选区批注与修订"><div class="heading"><h3 class="topic-title"><span class="chapter-no">5.1</span> <span class="heading-text" data-review-block="b0014">选区批注与修订</span></h3></div><p data-review-block="b0015">在批注中说明哪里需要修改、哪里应当保留，以及需要进一步讨论的问题。</p></div></section><section class="sheet" id="summary" data-title="总结"><div class="section-heading"><h2 class="section-title"><span class="section-number">6</span> <span class="heading-text" data-review-block="b0016">总结</span></h2></div><div class="topic" id="summary-main" data-anchor="summary-main" data-title="原文件保存与交付"><div class="heading"><h3 class="topic-title"><span class="chapter-no">6.1</span> <span class="heading-text" data-review-block="b0017">原文件保存与交付</span></h3></div><p data-review-block="b0018">保存到原文件，关闭后重开确认，再把同一个 HTML 发给同事。</p></div></section></article></main>
@@ -2584,9 +2583,8 @@ for(const topic of topics){const title=titleForTarget(topic);if(!title)continue;
 
 function numberTOC(list,path=[]){Array.from(list.children).filter(li=>li.tagName==='LI').forEach((li,index)=>{const link=li.querySelector(':scope>a');if(!link)return;const parts=[...path,index+1],number=parts.join('.'),target=document.querySelector(link.hash),title=titleForTarget(target);if(title){const n=document.createElement('span'),label=document.createElement('span');n.className='toc-number';n.textContent=number;label.className='toc-text';label.textContent=title;link.replaceChildren(n,document.createTextNode(' '),label);link.dataset.tocNumber=number;target.dataset.tocNumber=number;target.dataset.tocDepth=String(parts.length);target.dataset.title=title;const bodyNumber=target.querySelector(':scope>.heading .chapter-no,:scope>.section-heading .section-number');if(bodyNumber)bodyNumber.textContent=number;}const child=li.querySelector(':scope>ol');if(child)numberTOC(child,parts);});}
 numberTOC(nav.querySelector(':scope>ol'));
-document.querySelector('.rail-heading span').textContent=nav.querySelectorAll(':scope>ol>li').length+' 章';
 
-for(const li of [...nav.querySelectorAll('li')].reverse()){const list=li.querySelector(':scope>ol'),a=li.querySelector(':scope>a');if(!list||!a)continue;const details=document.createElement('details');details.className='toc-group';details.name='toc-chapters';details.open=a.hash==='#background';const summary=document.createElement('summary');summary.title='展开或折叠本章目录';li.insertBefore(details,a);summary.append(a);details.append(summary,list);}
+for(const li of [...nav.querySelectorAll('li')].reverse()){const list=li.querySelector(':scope>ol'),a=li.querySelector(':scope>a');if(!list||!a)continue;const details=document.createElement('details');details.className='toc-group';details.open=a.hash==='#background';const summary=document.createElement('summary');summary.title='展开或折叠本章目录';li.insertBefore(details,a);summary.append(a);details.append(summary,list);}
 const links=[...nav.querySelectorAll('a')],anchors=links.map(a=>document.querySelector(a.hash)).filter(Boolean);
 const menu=document.getElementById('menu'),present=document.getElementById('present');
 let presentation=false,current=0,scrollScheduled=false,fitFrame=0,readingPosition=null,navigationPin=null;
@@ -4462,7 +4460,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     clean.querySelector('meta[name="rsi-file-revision"]').content=uid();
     clean.querySelector('.site-brand strong').textContent=clean.title;
     clean.querySelector('.site-brand > span')?.remove();
-    clean.querySelector('.rail-heading span').textContent='6 章';
+    clean.querySelector('.rail-heading span').textContent='汇报目录';
     clean.getElementById('breadcrumb').textContent='1.1 核心场景与定位';
     const progress = clean.getElementById('rail-progress');
     progress.textContent='01 / 06';
