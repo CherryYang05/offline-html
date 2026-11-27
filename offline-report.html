@@ -660,10 +660,10 @@ button.primary:hover:not(:disabled) {
   overscroll-behavior: contain;
   scrollbar-width: thin;
   scrollbar-color: #cbd7d5 transparent;
-  padding: 10px;
+  padding: 12px;
 }
 .sidebar nav ol { list-style: none; margin: 0; padding: 0; }
-.sidebar nav > ol > li { margin: 0 0 4px; }
+.sidebar nav > ol > li { margin: 0 0 8px; }
 .sidebar nav a {
   display: flex;
   align-items: flex-start;
@@ -680,10 +680,9 @@ button.primary:hover:not(:disabled) {
   color: var(--ink);
 }
 .sidebar nav a.active {
-  background: var(--tint);
+  background: var(--surface-tint);
   color: var(--accent);
   font-weight: 600;
-  box-shadow: inset 3px 0 0 var(--accent);
 }
 .sidebar .toc-number {
   flex: 0 0 auto;
@@ -707,10 +706,10 @@ button.primary:hover:not(:disabled) {
   border-radius: var(--radius-sm);
 }
 .sidebar nav .toc-group > summary::-webkit-details-marker { display: none; }
-.sidebar nav .toc-group > summary:hover { background: var(--surface-subtle); }
+.sidebar nav .toc-group > summary:hover a { color: var(--accent); }
 .sidebar nav .toc-group > summary a { padding-right: 4px; font-weight: 600; color: var(--ink); }
 .sidebar nav .toc-group > summary a:hover { background: transparent; }
-.sidebar nav .toc-group > summary a.branch-active { color: var(--accent); }
+.sidebar nav .toc-group > summary a:is(.active, .branch-active) { color: var(--accent); }
 .sidebar nav .toc-group > summary::after {
   content: "";
   position: absolute;
@@ -727,9 +726,7 @@ button.primary:hover:not(:disabled) {
   transform: translateY(-65%) rotate(45deg);
 }
 .sidebar nav .toc-group > ol {
-  border-left: 1px solid var(--line-subtle);
-  margin: 3px 0 8px 15px;
-  padding-left: 8px;
+  margin: 2px 0 10px 24px;
 }
 .sidebar nav ol ol li { margin: 2px 0; }
 .sidebar nav ol ol a {
